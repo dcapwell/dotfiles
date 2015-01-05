@@ -3,18 +3,6 @@ abspath() {
   echo $(cd $(dirname "$1"); pwd)/$(basename "$1")
 }
 
-num_cpus() {
-  case "$(uname -s)" in
-    Darwin)
-      sysctl hw.ncpu | awk '{print $2}'
-      ;;
-    *)
-      echo "Unsupported system type: $(uname -s)" >&2
-      return 1
-      ;;
-  esac
-}
-
 # Run a command N times across a pool of threads
 # N <command> <args>
 parn() {
@@ -91,4 +79,9 @@ meeting_note() {
   fi
   echo "=== $(date) ===" >> $1
   vim $1
+}
+
+# remove a element from the current PATH
+removeFromPath() {
+  export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
