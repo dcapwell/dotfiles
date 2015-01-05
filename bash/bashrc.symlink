@@ -1,4 +1,10 @@
-for path in $(find $(dirname $(dirname $(readlink -f "$HOME/.bashrc"))) -name "*.bash")
+file="$0"
+if [ "$file" == "-bash" ]; then
+  # sourced
+  file="$HOME/.bashrc"
+fi
+for path in $(find $(dirname $(dirname $(readlink -f "$file"))) -name "*.bash")
 do
   source "$path"
 done
+unset file
