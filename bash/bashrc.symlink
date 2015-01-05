@@ -1,0 +1,4 @@
+for path in $(find $(dirname $(dirname $(readlink -f "$HOME/.bashrc"))) -name "*.bash")
+do
+  source "$path"
+done

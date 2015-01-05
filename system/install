@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+install() {
+  if type apt-get >/dev/null 2>&1 ; then
+    apt-get install -y "$@"
+    return $?
+  fi
+
+  if type yum 1> /dev/null 2>&1 ; then
+    yum install -y "$@"
+    return $?
+  fi
+
+  if type brew 1> /dev/null 2>&1 ; then
+    brew install -y "$@"
+    return $?
+  fi
+
+  echo "Unknown system package manager..." >&2
+}
+
+pkg_install() {
+  local path="$1"
+  if [[ "$path" == http* ]]; then
+    # copy locally
+    local name=$(basename "$path")
+    curl -o "/tmp/$name" "$path"
+    path="/tmp/$name"
+  fi
+  dpkg -i "$path"
+}
+
+install \
+  vim \
+  git \
+  tree \
+  tmux \
+  docker \
+  curl \
+  wget \
+  jq
+
+chrome_url() {
+  case $(uname -m) in
+    x86_64)
+      arch=amd64
+      ;;
+    *)
+      arch=i386
+      ;;
+  esac
+  if type apt-get >/dev/null 2>&1 ; then
+    postfix=deb
+  else
+    if type yum >/dev/null 2>&1 ; then
+      postfix=rpm
+    fi
+  fi
+  echo "https://dl.google.com/linux/direct/google-chrome-stable_current_${arch}.${postfix}"
+}
+
+pkg_install $(chrome_url)
