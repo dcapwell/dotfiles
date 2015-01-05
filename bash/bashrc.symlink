@@ -1,10 +1,8 @@
-file="$0"
-if [ "$file" == "-bash" ]; then
-  # sourced
-  file="$HOME/.bashrc"
-fi
-for path in $(find $(dirname $(dirname $(readlink -f "$file"))) -name "*.bash")
+# if a process fails in a pipe, fail everything
+set -o pipefail
+
+for path in $(find $(dirname $(dirname $(readlink -f "$HOME/.bashrc"))) -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
 do
   source "$path"
 done
-unset file
+unset path
