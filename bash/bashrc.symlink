@@ -1,6 +1,7 @@
 # if a process fails in a pipe, fail everything
 set -o pipefail
 
+# find all .bash files, and sort by name, allowing each file to add ordering
 for path in $(find $(dirname $(dirname $(readlink -f "$HOME/.bashrc"))) -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
 do
   source "$path"
