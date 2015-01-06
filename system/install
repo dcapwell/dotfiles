@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+set -o pipefail
+
+bin=$(cd $(dirname "$0"); pwd)
 
 install() {
   if type apt-get >/dev/null 2>&1 ; then
@@ -9,12 +11,12 @@ install() {
     return $?
   fi
 
-  if type yum 1> /dev/null 2>&1 ; then
+  if type yum > /dev/null 2>&1 ; then
     yum install -y "$@"
     return $?
   fi
 
-  if type brew 1> /dev/null 2>&1 ; then
+  if type brew > /dev/null 2>&1 ; then
     brew install -y "$@"
     return $?
   fi
@@ -33,15 +35,7 @@ pkg_install() {
   dpkg -i "$path"
 }
 
-install \
-  vim \
-  git \
-  tree \
-  tmux \
-  docker \
-  curl \
-  wget \
-  jq
+install $(cat $bin/packages | tr '[:space:]' ' ')
 
 chrome_url() {
   case $(uname -m) in
