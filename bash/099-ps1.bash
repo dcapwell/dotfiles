@@ -9,5 +9,5 @@ if [ "$PS1" != "" ] ; then
     POSTFIX="${POSTFIX} ${bldcyn}${GIT_PROMPT}${txtrst}"
   fi
 
-  export PS1="[\u@\h \w]\n${POSTFIX} \$ "
+  export PS1="[${txtgrn}\u${txtrst} ${txtylw}\w${txtrst}]${POSTFIX} \$ "
 fi
