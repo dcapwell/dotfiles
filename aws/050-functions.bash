@@ -87,4 +87,10 @@ ec2-scp-hosts() {
   done
 }
 
+
+# Rsync between a local and ec2 node
+ec2-rsync() {
+  rsync -rave "ssh -i ${EC2_PEM:-~/.ssh/aws.pem} ${SSH_OPTS[@]}" "$@"
+}
+
 unset SSH_OPTS
