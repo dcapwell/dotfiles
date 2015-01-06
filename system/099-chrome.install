@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+pkg_install() {
+  local path="$1"
+  if [[ "$path" == http* ]]; then
+    # copy locally
+    local name=$(basename "$path")
+    if [ ! -e "/tmp/$name" ]; then
+      curl -o "/tmp/$name" "$path"
+    fi
+    path="/tmp/$name"
+  fi
+  sudo dpkg -i "$path"
+}
+
+chrome_url() {
+  case $(uname -m) in
+    x86_64)
+      arch=amd64
+      ;;
+    *)
+      arch=i386
+      ;;
+  esac
+  if type apt-get >/dev/null 2>&1 ; then
+    postfix=deb
+  else
+    if type yum >/dev/null 2>&1 ; then
+      postfix=rpm
+    fi
+  fi
+  echo "https://dl.google.com/linux/direct/google-chrome-stable_current_${arch}.${postfix}"
+}
+
+pkg_install $(chrome_url)

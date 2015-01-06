@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 curl -s -o 010-git-completion.bash "https://raw.github.com/git/git/v`git --version | awk '{print $3}'`/contrib/completion/git-completion.bash"
 curl -s -o 010-git-prompt.bash "https://raw.github.com/git/git/v`git --version | awk '{print $3}'`/contrib/completion/git-prompt.sh"

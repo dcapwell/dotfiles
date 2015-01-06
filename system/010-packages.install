@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0"); pwd)
+
+install_package() {
+  if type apt-get >/dev/null 2>&1 ; then
+    sudo apt-get install -y "$@"
+    return $?
+  fi
+
+  if type yum > /dev/null 2>&1 ; then
+    sudo yum install -y "$@"
+    return $?
+  fi
+
+  if type brew > /dev/null 2>&1 ; then
+    sudo brew install -y "$@"
+    return $?
+  fi
+
+  echo "Unknown system package manager..." >&2
+}
+
+install_package $(sed -e '/^[ ]*\/\//d' -e 's|[ ]*//.*| |' -e 's|^| |' $bin/packages | tr -d "\n")
