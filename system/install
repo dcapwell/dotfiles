@@ -24,6 +24,8 @@ install() {
   echo "Unknown system package manager..." >&2
 }
 
+install $(cat $bin/packages | tr '[:space:]' ' ')
+
 pkg_install() {
   local path="$1"
   if [[ "$path" == http* ]]; then
@@ -34,8 +36,6 @@ pkg_install() {
   fi
   dpkg -i "$path"
 }
-
-install $(cat $bin/packages | tr '[:space:]' ' ')
 
 chrome_url() {
   case $(uname -m) in
