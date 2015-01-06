@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+pushd ~
+  wget 'https://gist.githubusercontent.com/danielrehn/d2e6f2129e5f853c3166/raw/9dff7165ed7d47a3f52b411653707cb2f38ce3af/seeyouspacecowboy.sh'
+popd
+

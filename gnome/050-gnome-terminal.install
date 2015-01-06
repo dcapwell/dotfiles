@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+# tells gnome-terminal to launch bash as a login-shell
+gconftool-2 --type boolean --set /apps/gnome-terminal/profiles/Default/login_shell true

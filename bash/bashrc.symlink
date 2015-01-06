@@ -3,7 +3,7 @@ set -o pipefail
 
 case "$(uname -s)" in
   Darwin)
-    abs_path=$(readlink -n "$HOME/.bash_profile")
+    abs_path=$(readlink -n "$HOME/.bashrc")
     ;;
   *)
     abs_path=$(readlink -f "$HOME/.bashrc")
