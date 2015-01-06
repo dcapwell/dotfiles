@@ -6,3 +6,4 @@ docker
 curl
 wget
 jq
+watch
