@@ -1,9 +1,18 @@
 # if a process fails in a pipe, fail everything
 set -o pipefail
 
+case "$(uname -s)" in
+  Darwin)
+    abs_path=$(readlink -n "$HOME/.bash_profile")
+    ;;
+  *)
+    abs_path=$(readlink -f "$HOME/.bashrc")
+    ;;
+esac
+
 # find all .bash files, and sort by name, allowing each file to add ordering
-for path in $(find $(dirname $(dirname $(readlink -f "$HOME/.bashrc"))) -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
+for path in $(find $(dirname $(dirname "$abs_path")) -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
 do
   source "$path"
 done
-unset path
+unset path abs_path
