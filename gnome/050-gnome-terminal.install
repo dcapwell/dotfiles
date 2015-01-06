@@ -4,7 +4,9 @@
 set -e
 set -o pipefail
 
-bin=$(cd $(dirname "$0") > /dev/null; pwd)
+if [ "$(uname -s)" == "Linux" ]; then
+  # tells gnome-terminal to launch bash as a login-shell
+  # this will cause ~/.bash_logout to be read
+  gconftool-2 --type boolean --set /apps/gnome-terminal/profiles/Default/login_shell true
+fi
 
-# tells gnome-terminal to launch bash as a login-shell
-gconftool-2 --type boolean --set /apps/gnome-terminal/profiles/Default/login_shell true
