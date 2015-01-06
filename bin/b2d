@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -e
+
+this="$0"
+script_name=$(basename "$this")
+
+export SSH_HOST_PORT=${SSH_HOST_PORT:-2022}
+
+docker_ssh() {
+  sshpass -p tcuser ssh docker@localhost -p $SSH_HOST_PORT "$@"
+}
+
+docker_tunnel() {
+  sshpass -p tcuser ssh -v -D 9696 docker@localhost -p $SSH_HOST_PORT
+}
+
+usage() {
+  cat <<EOF
+Usage: $script_name [action]
+
+Actions:
+ssh     Login to boot2docker
+tunnel  Setup a SSH SOCKS tunnel to the VM
+help    This screen
+EOF
+  exit 0
+}
+
+main() {
+  if [ $# == 0 ]; then
+    usage
+  fi
+
+  local action="$1"; shift
+  case $action in
+    ssh)
+      docker_ssh "$@"
+      ;;
+    tunnel)
+      docker_tunnel
+      ;;
+    help)
+      usage
+      ;;
+    *)
+      echo "Unknown action: $action"
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# OpenJDKs jol (Java Object Layout)
+# if a previous version isn't installed, this script will set it up on first run
+
+set -e
+set -o pipefail
+
+bin=`dirname "$0"`
+bin=`cd "$bin">/dev/null; pwd`
+
+export JOL_HOME=/opt/openjdk/code-tools/jol
+
+find_path() {
+  ls -d $JOL_HOME/jol-* | head -n 1
+}
+
+setup() {
+  if [ ! -e "$JOL_HOME" ]; then
+    if [ "$(id -u)" != "0" ]; then
+      echo "Creating $JOL_HOME; need to run as root"
+      sudo mkdir -p "$JOL_HOME"
+      sudo chmod a+rws "$JOL_HOME"
+    else
+      mkdir -p "$JOL_HOME"
+    fi
+  fi
+  pushd "$JOL_HOME"
+    local url='http://hg.openjdk.java.net/code-tools/jol/archive/tip.tar.gz'
+    echo "At $JOL_HOME downloading $url"
+    wget "$url"
+    tar zxvf tip.tar.gz
+    cd jol-*
+    mvn clean install
+  popd
+}
+
+usage() {
+  local path="$1"
+  local clis=$(ls $path/jol-cli/target/jol-* | egrep -v "cli-" | xargs basename | sed 's;jol-;;g' | sed 's;.jar;;g')
+  cat <<EOF 1>&2
+$bin/jol [command] [args]
+
+Commands:
+
+${clis[@]}
+EOF
+
+  exit 1
+}
+
+main() {
+  if [ ! find_path ]; then
+    setup
+  fi
+  local path=`find_path`
+
+  if [ $# -eq 0 ]; then
+    echo "Must define a command" 1>&2
+    usage "$path"
+  fi
+  local cmd="$1"
+  shift
+  local jarfile="$path/jol-cli/target/jol-$cmd.jar"
+  set -x
+  java -javaagent:$jarfile -jar "$jarfile" "$@"
+}
+
+main "$@"
