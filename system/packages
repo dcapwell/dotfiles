@@ -1,9 +1,9 @@
-vim     // because... F emacs =D
+vim         // because... F emacs =D
 git
-tree    // give a graph of the file system
-tmux    // replacement for screen
-docker  // fancy wrapper around LXC
+tree        // give a graph of the file system
+tmux        // replacement for screen
+docker.io   // fancy wrapper around LXC
 curl
 wget
-jq      // JSON query tool
-watch   // keeps rerunning commands and showing the output
+jq          // JSON query tool
+watch       // keeps rerunning commands and showing the output
