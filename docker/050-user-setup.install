@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+# add the user to the docker group so it doesn't require sudo
+sudo usermod -a -G docker $USER
