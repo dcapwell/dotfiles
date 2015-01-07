@@ -17,7 +17,13 @@ install_package() {
   fi
 
   if type brew > /dev/null 2>&1 ; then
-    sudo brew install -y "$@"
+    for pkg in "$@"
+    do
+      # check if installed first
+      if ! brew ls -1 | grep "$pkg" > /dev/null ; then
+        brew install -y "$pkg"
+      fi
+    done
     return $?
   fi
 
