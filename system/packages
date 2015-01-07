@@ -2,7 +2,6 @@ vim         // because... F emacs =D
 git
 tree        // give a graph of the file system
 tmux        // replacement for screen
-docker.io   // fancy wrapper around LXC
 curl
 wget
 jq          // JSON query tool
