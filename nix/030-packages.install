@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0"); pwd)
+
+nix-env -i $(sed -e '/^[ ]*\/\//d' -e 's|[ ]*//.*| |' -e 's|^| |' $bin/packages | tr -d "\n")
