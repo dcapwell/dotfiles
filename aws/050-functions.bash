@@ -1,4 +1,4 @@
-SSH_OPTS=(
+AWS_SSH_OPTS=(
   -o PasswordAuthentication=no
   -o ConnectTimeout=2
   -o UserKnownHostsFile=/dev/null
@@ -15,7 +15,7 @@ ec2-login() {
       return 1
   fi
 
-  ssh -i ${EC2_PEM:-~/.ssh/aws.pem} "${SSH_OPTS[@]}" ${EC2_USER:-ec2-user}@$1
+  ssh -i ${EC2_PEM:-~/.ssh/aws.pem} "${AWS_SSH_OPTS[@]}" ${EC2_USER:-ec2-user}@$1
 }
 
 # SSH into a remote EC2 host. This function will attempt to re-login on ssh failures (dropped connection, etc.)
@@ -70,7 +70,7 @@ ec2-scp() {
       echo "Unable to login to EC2; No host given" >&2
       return 1
   fi
-  scp -i ${EC2_PEM:-~/.ssh/aws.pem} "${SSH_OPTS[@]}" $1 ${EC2_USER:-ec2-user}@$2:~
+  scp -i ${EC2_PEM:-~/.ssh/aws.pem} "${AWS_SSH_OPTS[@]}" $1 ${EC2_USER:-ec2-user}@$2:~
 }
 
 # SCP a file to the set of EC2 hosts
@@ -90,7 +90,5 @@ ec2-scp-hosts() {
 
 # Rsync between a local and ec2 node
 ec2-rsync() {
-  rsync -rave "ssh -i ${EC2_PEM:-~/.ssh/aws.pem} ${SSH_OPTS[@]}" "$@"
+  rsync -rave "ssh -i ${EC2_PEM:-~/.ssh/aws.pem} ${AWS_SSH_OPTS[@]}" "$@"
 }
-
-unset SSH_OPTS
