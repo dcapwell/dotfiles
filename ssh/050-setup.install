@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+setup_config() {
+  ln -sf $bin/config $HOME/.ssh/config
+}
+
+setup_github_keys() {
+  if [ ! -e $HOME/.ssh/github ]; then
+    ssh-keygen -t rsa  -f $HOME/.ssh/github -N ''
+  fi
+}
+
+main() {
+  setup_config
+  setup_github_keys
+}
+
+main "$@"
