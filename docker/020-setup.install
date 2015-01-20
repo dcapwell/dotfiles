@@ -29,7 +29,10 @@ if type apt-get > /dev/null 2>&1 ; then
 fi
 
 if type brew > /dev/null 2>&1 ; then
-  brew install docker
+  # check if installed first
+  if ! brew ls -1 | grep "docker" > /dev/null ; then
+    brew install docker
+  fi
 fi
 
 # make sure daemon runs on start
