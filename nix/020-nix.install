@@ -8,4 +8,5 @@ bin=$(cd $(dirname "$0") > /dev/null; pwd)
 
 curl https://nixos.org/nix/install | sh
 
-nix-channel --add https://nixos.org/releases/nixos/14.12/nixos-14.12.335.676e8d7/ nixos-14.12
+nix-channel --add http://nixos.org/channels/nixpkgs-unstable
+nix-channel --update
