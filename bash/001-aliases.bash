@@ -21,5 +21,7 @@ alias grep='grep --color'
 # use GNU time rather than bash time
 alias time=/usr/bin/time
 
-# set bash to use vi mode rather than emacs mode
-set -o vi
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
