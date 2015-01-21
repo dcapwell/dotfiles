@@ -85,3 +85,17 @@ meeting_note() {
 removeFromPath() {
   export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
+
+clipboard() {
+  case "$(uname -s)" in
+    Linux)
+      xclip -selection clipboard
+      ;;
+    Darwin)
+      pbcopy
+      ;;
+    *)
+      echo "Unable to find clipboard commands" 1>&2
+      ;;
+  esac
+}
