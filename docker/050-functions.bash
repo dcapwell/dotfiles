@@ -12,3 +12,7 @@ function docker_stop_all() {
 function docker_kill_all() {
   docker kill $(docker ps | awk '{print $1}' | egrep -v "CONTAINER")
 }
+
+function docker_clean_images() {
+  docker images | grep none | awk '{print $3}' | xargs docker rmi
+}
