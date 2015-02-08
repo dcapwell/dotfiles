@@ -14,5 +14,5 @@ function docker_kill_all() {
 }
 
 function docker_clean_images() {
-  docker images | grep none | awk '{print $3}' | xargs docker rmi
+  docker images | grep -e '^<none>' | awk '{print $3}' | xargs docker rmi
 }
