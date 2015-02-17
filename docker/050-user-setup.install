@@ -5,4 +5,7 @@ set -e
 set -o pipefail
 
 # add the user to the docker group so it doesn't require sudo
-sudo usermod -a -G docker $USER
+if [ "Linux" == "$(uname -s)" ]; then                                                               
+  # add the user to the docker group so it doesn't require sudo                                     
+  sudo usermod -a -G docker $USER                                                                   
+fi
