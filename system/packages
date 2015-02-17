@@ -6,4 +6,3 @@ wget
 jq          // JSON query tool
 watch       // keeps rerunning commands and showing the output
 sshfs       // mount remote file systems locally over ssh
-xclip       // command line copy
