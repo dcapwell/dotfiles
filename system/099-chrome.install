@@ -35,13 +35,8 @@ chrome_url() {
   echo "https://dl.google.com/linux/direct/google-chrome-stable_current_${arch}.${postfix}"
 }
 
-if [ "$(uname -s)" == "Darwin" ]; then
-  # osx
-  # only install if not installed
-  if ! brew cask list -1 | grep google-chrome > /dev/null ; then
-    brew cask install google-chrome
-  fi
-else
-  # linux
+if [ "$(uname -s)" != "Darwin" ]; then
+  # unix based install
+  # OSX will have this installed via osx-cask-pacages
   pkg_install $(chrome_url)
 fi

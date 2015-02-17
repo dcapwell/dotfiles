@@ -20,7 +20,23 @@ install_package() {
   echo "Unknown system package manager..." >&2
 }
 
+install_cask_package() {
+  if type brew > /dev/null 2>&1 ; then
+    for pkg in "$@"
+    do
+      # check if installed first
+      if ! brew cask ls -1 | grep "$pkg" > /dev/null ; then
+        brew cask install -y "$pkg"
+      fi
+    done
+    return $?
+  fi
+
+  echo "Unknown system package manager..." >&2
+}
+
 if [ "Darwin" == "$(uname -s)" ]; then
   install_package $(sed -e '/^[ ]*\/\//d' -e 's|[ ]*//.*| |' -e 's|^| |' $bin/osx-packages | tr -d "\n")
+  install_cask_package $(sed -e '/^[ ]*\/\//d' -e 's|[ ]*//.*| |' -e 's|^| |' $bin/osx-cask-packages | tr -d "\n")
 fi
 
