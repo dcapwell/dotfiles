@@ -5,4 +5,6 @@ set -o pipefail
 
 bin=$(cd $(dirname "$0"); pwd)
 
+source  $HOME/.nix-profile/etc/profile.d/nix.sh
+
 nix-env -i $(sed -e '/^[ ]*\/\//d' -e 's|[ ]*//.*| |' -e 's|^| |' $bin/packages | tr -d "\n")
