@@ -104,3 +104,18 @@ clipboard() {
 mkd() {
   mkdir -p "$@" && cd "$_";
 }
+
+# Start an HTTP server from a directory, optionally specifying the port
+http_server() {
+  local port="${1:-8000}"
+  echo "Starting server http://localhost:$port"
+  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+  python -c $'
+import SimpleHTTPServer
+map = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map
+map[""] = "text/plain"
+for key, value in map.items():
+  map[key] = value + ";charset=UTF-8"
+  SimpleHTTPServer.test()' "$port"
+}
