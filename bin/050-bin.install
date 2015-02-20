@@ -12,7 +12,7 @@ main() {
   fi
   for s in $(ls $bin/* | grep -v ".*.install")
   do
-    ln -s "$s" "$HOME/bin/$(basename $s)"
+    ln -fs "$s" "$HOME/bin/$(basename $s)"
   done
 }
 

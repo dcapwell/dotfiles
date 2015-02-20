@@ -6,10 +6,13 @@ set -o pipefail
 
 bin=$(cd $(dirname "$0") > /dev/null; pwd)
 
-curl https://nixos.org/nix/install | sh
+if [ ! -e $HOME/.nix-profile/bin/nix-env ]; then
+  curl https://nixos.org/nix/install | sh
+fi
 
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 nix-channel --add http://nixos.org/channels/nixpkgs-unstable
 nix-channel --add http://nixos.org/releases/nixos/14.12/nixos-14.12.335.676e8d7/ nixpkgs-14.12
 nix-channel --update
+
