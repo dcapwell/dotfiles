@@ -47,7 +47,7 @@ main() {
 
   local jarfile="$path/jol-cli/target/jol-cli.jar"
   set -x
-  java -javaagent:$jarfile -jar "$jarfile" "$@"
+  java $JAVA_OPTS -cp .:$PWD/*:$jarfile:$CLASSPATH -javaagent:$jarfile org.openjdk.jol.Main  "$@"
 }
 
 main "$@"
