@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+main() {
+  if [ ! -d $HOME/bin ]; then
+    mkdir $HOME/bin
+  fi
+  for s in $(ls $bin/* | grep -v ".*.install")
+  do
+    ln -s "$s" "$HOME/bin/$(basename $s)"
+  done
+}
+
+main "$@"

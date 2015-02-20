@@ -3,6 +3,7 @@
 # OpenJDKs jol (Java Object Layout)
 # if a previous version isn't installed, this script will set it up on first run
 
+#set -x
 set -e
 set -o pipefail
 
@@ -12,7 +13,11 @@ bin=`cd "$bin">/dev/null; pwd`
 export JOL_HOME=/opt/openjdk/code-tools/jol
 
 find_path() {
-  ls -d $JOL_HOME/jol-* | head -n 1
+  if [ -e "$JOL_HOME" ]; then
+    ls -d $JOL_HOME/jol-* 2> /dev/null | head -n 1
+  else
+    return 1
+  fi
 }
 
 setup() {
@@ -20,48 +25,27 @@ setup() {
     if [ "$(id -u)" != "0" ]; then
       echo "Creating $JOL_HOME; need to run as root"
       sudo mkdir -p "$JOL_HOME"
-      sudo chmod a+rws "$JOL_HOME"
+      sudo chmod 777 "$JOL_HOME"
     else
       mkdir -p "$JOL_HOME"
+      chmod 777 "$JOL_HOME"
     fi
   fi
   pushd "$JOL_HOME"
     local url='http://hg.openjdk.java.net/code-tools/jol/archive/tip.tar.gz'
     echo "At $JOL_HOME downloading $url"
-    wget "$url"
+    curl -O "$url"
     tar zxvf tip.tar.gz
     cd jol-*
     mvn clean install
   popd
 }
 
-usage() {
-  local path="$1"
-  local clis=$(ls $path/jol-cli/target/jol-* | egrep -v "cli-" | xargs basename | sed 's;jol-;;g' | sed 's;.jar;;g')
-  cat <<EOF 1>&2
-$bin/jol [command] [args]
-
-Commands:
-
-${clis[@]}
-EOF
-
-  exit 1
-}
-
 main() {
-  if [ ! find_path ]; then
-    setup
-  fi
+  find_path || setup
   local path=`find_path`
 
-  if [ $# -eq 0 ]; then
-    echo "Must define a command" 1>&2
-    usage "$path"
-  fi
-  local cmd="$1"
-  shift
-  local jarfile="$path/jol-cli/target/jol-$cmd.jar"
+  local jarfile="$path/jol-cli/target/jol-cli.jar"
   set -x
   java -javaagent:$jarfile -jar "$jarfile" "$@"
 }
