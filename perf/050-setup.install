@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+# needed so we can pick up the aliases defined here
+shopt -s expand_aliases
+source $bin/../bash/000-os-functions.bash
+
+if is_rhel ; then
+  install_pkg perf
+fi
+
+if is_ubuntu ; then
+  install_pkg linux-tools-$(uname -r)
+fi
