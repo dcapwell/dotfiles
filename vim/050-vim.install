@@ -12,6 +12,7 @@ git_plugins=(
   "git@github.com:guns/vim-clojure-static.git"
   "git@github.com:guns/vim-clojure-highlight.git"
   "git@github.com:tpope/vim-fireplace.git"
+  "https://github.com/scrooloose/nerdtree.git"
 )
 
 git_name() {
