@@ -58,7 +58,7 @@
   remote = red
 
 [push]
-  default = simple
+  default = matching
 
 [http]
   sslVerify = false
