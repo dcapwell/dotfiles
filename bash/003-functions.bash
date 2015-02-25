@@ -82,7 +82,7 @@ meeting_note() {
 }
 
 # remove a element from the current PATH
-removeFromPath() {
+remove_from_path() {
   export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
 
