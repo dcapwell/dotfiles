@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+export URL=https://github.com/emcrisostomo/fswatch/releases/download/1.4.6/fswatch-1.4.6.tar.gz
+export TAR=$(basename $URL)
+export NAME=$(echo $TAR | sed 's;\.tar\.gz;;g' )
+
+if ! type fswatch 1>&2 2>/dev/null ; then
+  pushd /tmp
+    curl -LO $URL
+    tar zxvf $TAR
+    cd $NAME
+    ./configure --prefix=/usr CFLAGS=-g
+    make
+    sudo make install
+    make installcheck
+  popd
+fi
