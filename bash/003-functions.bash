@@ -81,6 +81,28 @@ meeting_note() {
   vim $1
 }
 
+# Create a markdown file about the given topic.  The date and name will be used to find the location of the file.
+blog_post() {
+  if [ $# -lt 1 ]; then
+    echo "A title is needed to create a blog post"
+    return 1
+  fi
+  local year=$(date +%Y)
+  local month=$(date +%m)
+  local day=$(date +%d)
+  local title="$@"
+  local dir="$year/$month/$day"
+  local name="$(echo $title | tr -d '\n' | tr '[:space:]' '_').md"
+  mkdir -p "$dir"
+  cat > "$dir/$name" <<EOF
+# $title
+# Reference
+
+[^1]:
+EOF
+  echo "$dir/$name"
+}
+
 # remove a element from the current PATH
 remove_from_path() {
   export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
