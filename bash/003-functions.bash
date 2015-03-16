@@ -43,6 +43,7 @@ script-gen() {
 #set -x
 set -e
 set -o pipefail
+set -u
 
 bin=\$(cd \$(dirname "\$0") > /dev/null; pwd)
 
