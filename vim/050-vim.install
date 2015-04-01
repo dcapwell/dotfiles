@@ -15,6 +15,7 @@ git_plugins=(
   "https://github.com/scrooloose/nerdtree.git"
   "git@github.com:elzr/vim-json.git"
   "git://github.com/altercation/vim-colors-solarized.git"
+  "git@github.com:tfnico/vim-gradle.git"
 )
 
 git_name() {
