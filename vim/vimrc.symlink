@@ -66,9 +66,10 @@ set tm=500
 " Enable syntax highlighting
 syntax enable
 
-"colorscheme desert
-colorscheme solarized
+colorscheme desert
+"colorscheme solarized
 set background=dark
+"set background=light
 
 " Set extra options when running in GUI mode
 if has("gui_running")
