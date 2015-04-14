@@ -10,7 +10,7 @@ sudo mkdir -p /opt/FlameGraph
 sudo chmod a+rwx /opt/FlameGraph
 pushd /opt/FlameGraph
   if [ ! -d FlameGraph_master ]; then
-    git clone git@github.com:brendangregg/FlameGraph.git FlameGraph_master
+    git clone https://github.com/brendangregg/FlameGraph.git FlameGraph_master
   fi
   cd FlameGraph_master
   git pull
