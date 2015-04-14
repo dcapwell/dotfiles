@@ -38,7 +38,9 @@ git_install() {
 main() {
   # setup vim-pathogen and install the plugins through that
   mkdir -p ~/.vim/autoload ~/.vim/bundle
-  wget --no-check-certificate -O ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+  if [ ! -e ~/.vim/autoload/pathogen.vim ]; then
+    wget --no-check-certificate -O ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+  fi
 
   for plugin in "${git_plugins[@]}"; do
     git_install "$plugin"
