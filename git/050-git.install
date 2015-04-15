@@ -2,5 +2,30 @@
 
 set -e
 
-curl -s -o 010-git-completion.bash "https://raw.github.com/git/git/v`git --version | awk '{print $3}'`/contrib/completion/git-completion.bash"
-curl -s -o 010-git-prompt.bash "https://raw.github.com/git/git/v`git --version | awk '{print $3}'`/contrib/completion/git-prompt.sh"
+bin=`dirname "$0"`
+bin=`cd "$bin">/dev/null; pwd`
+
+git_version=$(git --version | awk '{print $3}')
+
+URLS=(
+ "https://raw.githubusercontent.com/git/git/v${git_version}/contrib/completion/git-completion.bash"
+ "https://raw.githubusercontent.com/git/git/v${git_version}/contrib/completion/git-prompt.sh"
+)
+
+include() {
+  local readonly url="$1"
+  local readonly name=010-$(basename "$url").bash
+  if [ ! -e "$name" ]; then
+    curl -s --fail -o "$bin/$name" "$url"
+  fi
+}
+
+_main() {
+  set -x
+  for url in "${URLS[@]}"
+  do
+    include "$url"
+  done
+}
+
+_main "$@"
