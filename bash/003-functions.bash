@@ -142,3 +142,8 @@ for key, value in map.items():
   map[key] = value + ";charset=UTF-8"
   SimpleHTTPServer.test()' "$port"
 }
+
+# Add color to stderr for a command given
+# Example: color mvn clean test
+# http://stackoverflow.com/questions/1763891/can-stdout-and-stderr-use-different-colors-under-xterm-konsole
+color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
