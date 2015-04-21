@@ -17,6 +17,7 @@ git_plugins=(
   "git://github.com/altercation/vim-colors-solarized.git"
   "git@github.com:tfnico/vim-gradle.git"
   "git@github.com:othree/xml.vim.git"
+  "git@github.com:derekwyatt/vim-scala.git"
 )
 
 git_name() {
