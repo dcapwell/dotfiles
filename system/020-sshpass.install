@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+set -u
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+download() {
+  curl -O -L http://downloads.sourceforge.net/project/sshpass/sshpass/1.05/sshpass-1.05.tar.gz 
+  tar xvzf sshpass-1.05.tar.gz
+}
+
+install() {
+  cd sshpass-1.05
+  ./configure
+  make
+  sudo make install
+}
+
+main() {
+  download
+  install
+}
+
+main "$@"
