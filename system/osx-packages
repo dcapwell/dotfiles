@@ -2,3 +2,4 @@ reattach-to-user-namespace    // used to copy from tmux to clipboard
 fswatch                       // used to execute commands when files get updated (recompile)
 maven
 libtool                       // needed or autogen doesn't work
+gnu-tar                       // because f mac
