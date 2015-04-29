@@ -47,7 +47,7 @@ set -u
 
 bin=\$(cd \$(dirname "\$0") > /dev/null; pwd)
 
-main() {
+_main() {
   # select action type
   # local action=\${1:-all}
   # case "\$action" in
@@ -67,7 +67,7 @@ main() {
   # done
 }
 
-main "\$@"
+_main "\$@"
 EOF
 
   chmod a+x "$name"
