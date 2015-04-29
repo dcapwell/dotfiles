@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+set -u
+
+if [ ! -e /Library/Developer/CommandLineTools/usr/include/c++/v1/__debug ]; then
+  # http://stackoverflow.com/questions/29529455/missing-c-header-debug-after-updating-osx-command-line-tools-6-3
+  sudo touch /Library/Developer/CommandLineTools/usr/include/c++/v1/__debug
+fi
+
