@@ -10,3 +10,8 @@ intellij() {
     return 1
   fi
 }
+
+intellij_cleanup() {
+  find . -name "*.iml" -print0 | xargs -0 rm
+  rm -rf .idea/
+}
