@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -x
+set -e
+set -o pipefail
+set -u
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+if [ ! -f $HOME/bin/lein ]; then
+  mkdir -p $HOME/bin || true
+  curl -L -o $HOME/bin/lein 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
+  chmod a+x $HOME/bin/lein
+fi

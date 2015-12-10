@@ -20,7 +20,8 @@ set autoread
 
 " Copy buffer to 'unnamed', which will put it in OSX's copy buffer
 " http://robots.thoughtbot.com/how-to-copy-and-paste-with-tmux-on-mac-os-x
-set clipboard=unnamed
+" Was way too aggressive, so disabling for now
+" set clipboard=unnamed
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
