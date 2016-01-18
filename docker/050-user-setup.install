@@ -9,3 +9,11 @@ if [ "Linux" == "$(uname -s)" ]; then
   # add the user to the docker group so it doesn't require sudo                                     
   sudo usermod -a -G docker $USER                                                                   
 fi
+
+if [ "Linux" == "$(uname -s)" ]; then
+  curl -L https://github.com/docker/machine/releases/download/v0.5.3/docker-machine_linux-amd64 > $HOME/bin/docker-machine
+  chmod +x $HOME/bin/docker-machine
+elif [ "Darwin" == "$(uname -s)" ]; then
+  curl -L https://github.com/docker/machine/releases/download/v0.5.3/docker-machine_darwin-amd64 > $HOME/bin/docker-machine && \
+  chmod +x $HOME/bin/docker-machine
+fi
