@@ -26,6 +26,8 @@ _main() {
   do
     include "$url"
   done
+  # make it so ssh conf doesnt get committed when updating
+  # git update-index --assume-unchanged $bin/ssh/config
 }
 
 _main "$@"
