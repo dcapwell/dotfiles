@@ -18,6 +18,7 @@ git_plugins=(
   "git@github.com:tfnico/vim-gradle.git"
   "git@github.com:othree/xml.vim.git"
   "git@github.com:derekwyatt/vim-scala.git"
+  "git@github.com:lambdatoast/elm.vim.git"
 )
 
 git_name() {
