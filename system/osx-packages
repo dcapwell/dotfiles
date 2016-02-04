@@ -3,3 +3,4 @@ fswatch                       // used to execute commands when files get updated
 maven
 libtool                       // needed or autogen doesn't work
 gnu-tar                       // because f mac
+csshX                         // Login to multiple hosts at a time
