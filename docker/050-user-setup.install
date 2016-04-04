@@ -19,7 +19,7 @@ elif [ "Darwin" == "$(uname -s)" ]; then
   docker-machine create --driver virtualbox \
     --virtualbox-disk-size 40960 \
     --virtualbox-memory 8192 \
-    --virtualbox-cpu-count 4 \
+    --virtualbox-cpu-count 8 \
     --virtualbox-host-dns-resolver \
     --virtualbox-dns-proxy \
     docker
