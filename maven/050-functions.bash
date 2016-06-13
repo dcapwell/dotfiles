@@ -7,7 +7,10 @@ mvn-gen() {
   local groupId="$1"
   local artifactId="$2"
   mvn -B archetype:generate \
-    -DarchetypeGroupId=org.apache.maven.archetypes \
+    -DarchetypeGroupId=com.github.dcapwell.dotfiles.archetype \
+    -DarchetypeArtifactId=basic \
+    -DarchetypeVersion=0.1 \
+    -DinteractiveMode=false \
     -DgroupId="$groupId" \
     -DartifactId="$artifactId"
 }

@@ -26,3 +26,7 @@ setw -g mode-mouse on
 bind c new-window -c '#{pane_current_path}'
 bind '"' split-window -c '#{pane_current_path}'
 bind '%' split-window -h -c '#{pane_current_path}'
+
+# increase each buffer to be effectively unbounded
+# http://unix.stackexchange.com/questions/43414/unlimited-history-in-tmux
+set -g history-limit 999999999

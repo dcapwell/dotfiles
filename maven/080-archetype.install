@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+cd $bin/archetype
+mvn install
