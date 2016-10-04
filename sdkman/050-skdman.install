@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+
+bin=$(cd $(dirname "$0"); pwd)
+
+# to force the colors to show up
+source $bin/../bash/*-colors.bash
+
+curl -s https://get.sdkman.io | bash
+
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+for lang in $(cat $bin/languages)
+do
+  echo -e "${txtblu}Setting up ${txtred}${lang}${txtrst}...${txtrst}"
+  sdk install $lang
+done
