@@ -21,6 +21,14 @@ function docker_clean_images_dangling() {
   docker rmi $(docker images -f dangling=true -q)
 }
 
+docker_ssh() {
+  if type docker-machine 2>/dev/null; then
+    docker-machine ssh docker "$@"
+  elif type boot2docker 2>/dev/null; then
+    boot2docker ssh "$@"
+  fi
+}
+
 docker_api() {
-  boot2docker ssh curl --silent --show-error --globoff --insecure --cert $DOCKER_CERT_PATH/cert.pem --key $DOCKER_CERT_PATH/key.pem "$(echo $DOCKER_HOST | sed 's;tcp;https;')/$@"
+  docker_ssh curl --silent --show-error --globoff --insecure --cert $DOCKER_CERT_PATH/cert.pem --key $DOCKER_CERT_PATH/key.pem "$(echo $DOCKER_HOST | sed 's;tcp;https;')/$@"
 }
