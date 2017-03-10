@@ -8,7 +8,7 @@ if is_osx ; then
     if [ $# -ne 0 ]; then
       remove_from_path '/System/Library/Frameworks/JavaVM.framework/Home/bin'
       if [ -n "${JAVA_HOME+x}" ]; then
-        remove_from_path "$JAVA_HOME"
+        remove_from_path "$JAVA_HOME/bin"
       fi
       export JAVA_HOME=$(/usr/libexec/java_home -v "$@")
       export PATH="$JAVA_HOME/bin:$PATH"
@@ -16,5 +16,4 @@ if is_osx ; then
     echo "JAVA_HOME set to $JAVA_HOME"
     java -version
   }
-
 fi
