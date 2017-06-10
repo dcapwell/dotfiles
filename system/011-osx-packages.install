@@ -11,7 +11,7 @@ install_package() {
     do
       # check if installed first
       if ! brew ls -1 | grep "$pkg" > /dev/null ; then
-        brew install -y "$pkg"
+        brew install "$pkg"
       fi
     done
     return $?
@@ -26,7 +26,7 @@ install_cask_package() {
     do
       # check if installed first
       if ! brew cask ls -1 | grep "$pkg" > /dev/null ; then
-        brew cask install -y "$pkg"
+        brew cask install "$pkg"
       fi
     done
     return $?
