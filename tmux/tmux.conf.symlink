@@ -10,15 +10,15 @@ if-shell 'test "$(uname)" = "Darwin"' 'bind C-v run "reattach-to-user-namespace 
 # http://jasonwryan.com/blog/2011/06/07/copy-and-paste-in-tmux/
 setw -g mode-keys vi
 
-unbind [
-bind Escape copy-mode
-unbind p
-bind p paste-buffer
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
+# unbind [
+# bind Escape copy-mode
+# unbind p
+# bind p paste-buffer
+# bind-key -t vi-copy 'v' begin-selection
+# bind-key -t vi-copy 'y' copy-selection
 
-# http://superuser.com/questions/210125/scroll-shell-output-with-mouse-in-tmux
-setw -g mode-mouse on
+# http://www.davidverhasselt.com/better-mouse-scrolling-in-tmux/
+set-option -g mouse on
 
 # http://unix.stackexchange.com/questions/101949/new-tmux-panes-go-to-the-same-directory-as-the-current-pane-new-tmux-windows-go
 # new panes open in the same location as the current focus pane
