@@ -55,6 +55,9 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
+" http://vim.wikia.com/wiki/Backspace_and_delete_problems
+set backspace=2
+
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
@@ -149,3 +152,20 @@ au VimEnter * RainbowParenthesesToggle
 " au Syntax * RainbowParenthesesLoadRound
 " au Syntax * RainbowParenthesesLoadSquare
 " au Syntax * RainbowParenthesesLoadBraces
+
+" follow python convention for python files
+" https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    "\ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+" for web conventions
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
