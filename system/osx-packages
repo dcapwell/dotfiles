@@ -1,6 +1,7 @@
 reattach-to-user-namespace    // used to copy from tmux to clipboard
 fswatch                       // used to execute commands when files get updated (recompile)
-maven
+maven                         // a java build system
+gradle                        // a java build system
 libtool                       // needed or autogen doesn't work
 gnu-tar                       // because f mac
 csshX                         // Login to multiple hosts at a time
