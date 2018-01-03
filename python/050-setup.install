@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+set -u
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+libs=(
+  pew
+)
+
+pip install "${libs[@]}"
