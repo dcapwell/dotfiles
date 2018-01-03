@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+#set -x
+set -e
+set -o pipefail
+set -u
+
+bin=$(cd $(dirname "$0") > /dev/null; pwd)
+
+export PROTO_VERSION="${PROTO_VERSION:-2.5.0}"
+
+if ! type protoc 1>/dev/null 2>/dev/null ; then
+  cd /tmp
+    curl -L "https://github.com/google/protobuf/releases/download/v${PROTO_VERSION}/protobuf-${PROTO_VERSION}.tar.gz" | tar zxf -
+    cd protobuf-${PROTO_VERSION}
+    ./configure
+    make
+    sudo make install
+fi
+
+protoc --version
