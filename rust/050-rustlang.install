@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+cat <<EOF | curl https://sh.rustup.rs -sSf | sh
+yes
+yes
+n
+1
+EOF
