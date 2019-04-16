@@ -40,12 +40,12 @@ script-gen() {
   cat <<EOF > "$name"
 #!/usr/bin/env bash
 
-#set -x
-set -e
+#set -o xtrace
+set -o errexit
 set -o pipefail
-set -u
+set -o nounset
 
-bin=\$(cd \$(dirname "\$0") > /dev/null; pwd)
+bin="\$(cd "\$(dirname "\$0")" > /dev/null; pwd)"
 
 _main() {
   # select action type
@@ -154,4 +154,24 @@ password_gen() {
   else
     echo "$1" | md5 | perl -pe 's/(^|-)(\w)/\U$2/g'
   fi
+}
+
+tmp_sandbox_cleanup() {
+  if [ "${TMP_SANDBOX:-}" ]; then
+    rm -rf "$TMP_SANDBOX"
+    unset "$TMP_SANDBOX"
+  fi
+  if [ "${TMP_SANDBOX_ORIGIN_DIR}" ]; then
+    cd "$TMP_SANDBOX_ORIGIN_DIR"
+    unset "$TMP_SANDBOX_ORIGIN_DIR"
+  fi
+}
+
+tmp_sandbox() {
+  local readonly output_dir=$(mktemp -d -t "tmp_sandbox.XXXXXXXXXX")
+  cd "$output_dir"
+  export TMP_SANDBOX="$output_dir"
+  export TMP_SANDBOX_ORIGIN_DIR="$PWD"
+  trap tmp_sandbox_cleanup EXIT
+  bash
 }
