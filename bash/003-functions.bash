@@ -175,3 +175,7 @@ tmp_sandbox() {
   trap tmp_sandbox_cleanup EXIT
   bash
 }
+
+histogram() {
+  uniq -c  | awk '{print $2, $1}' | sort -g -k2 | awk '{$2=sprintf("%-*s", $2, ""); gsub(" ", "=", $2); printf("%-5s%s\n", $1, $2)}' | sort -k 1 -g
+}
