@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+if kubectl 1>/dev/null 2>/dev/null ; then
+  kubectl completion bash > $bin/050-kubectl.bash
+fi
+
