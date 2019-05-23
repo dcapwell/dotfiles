@@ -17,3 +17,8 @@ if is_osx ; then
     java -version
   }
 fi
+
+jvm_memory_watch() {
+  local readonly pid="$1"
+  jstat -gc -h10 "$pid" 1000 0 | awk '/^[0-9]/ {printf "%-10s %-10s %-10s %-10s %-10s %-10s\n", int((100*$6)/$5), int((100*$8)/$7), $(NF-3), $(NF-2), $(NF-1), $NF}'
+}
