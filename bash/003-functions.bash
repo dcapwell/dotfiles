@@ -176,6 +176,26 @@ tmp_sandbox() {
   bash
 }
 
+bucket_count() {
+  sort -g | uniq -c  | awk '{print $2, $1}'
+}
+
+_histogram() {
+  local readonly histo="======================================================================+"
+
+  local key=""
+  local value=""
+
+  read key value
+
+  while [ -n "$key" ] ; do
+    # Use a default width of 70 for the histogram
+    printf "%4s %s\n" "$key" "${histo:0:$value}"
+
+    read key value
+  done
+}
+
 histogram() {
-  sort -g | uniq -c  | awk '{print $2, $1}' | sort -g -k2 | awk '{$2=sprintf("%-*s", $2, ""); gsub(" ", "=", $2); printf("%-5s%s\n", $1, $2)}' | sort -k 1 -g
+  bucket_count | _histogram
 }
