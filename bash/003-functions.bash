@@ -181,7 +181,7 @@ bucket_count() {
 }
 
 _histogram() {
-  local readonly histo="======================================================================+"
+  local readonly histo="$(printf "%$(( ${COLUMNS} - 10 ))s\n" | sed 's/ /=/g')+"
 
   local key=""
   local value=""
