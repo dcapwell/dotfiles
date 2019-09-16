@@ -21,7 +21,7 @@ install_package() {
     do
       # check if installed first
       if ! brew ls -1 | grep "$pkg" > /dev/null ; then
-        brew install -y "$pkg"
+        brew install "$pkg"
       fi
     done
     return $?
