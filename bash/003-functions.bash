@@ -71,6 +71,7 @@ _main "\$@"
 EOF
 
   chmod a+x "$name"
+  "${VISUAL:-"${EDITOR:-vi}"}" "$name"
 }
 
 # Updates a file with the current time, and opens it for editing
