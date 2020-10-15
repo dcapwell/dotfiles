@@ -29,3 +29,5 @@ alias time=/usr/bin/time
 alias map="xargs -n1"
 
 alias hex2dec='printf "%d\n"'
+
+alias say='say -v Daniel'
