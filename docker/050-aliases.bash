@@ -1,6 +1,6 @@
 # run the current directory in a docker container
 # maven and gradle homes are also mounted
-alias docker-env='docker run -t -i --rm -w $PWD -v $PWD:$PWD'
+alias docker-env='docker run -t -i --privileged --rm -w $PWD -v $PWD:$PWD'
 
 alias dockerviz='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -t'
 alias dockviz='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -t'
