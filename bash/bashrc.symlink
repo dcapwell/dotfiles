@@ -11,8 +11,9 @@ case "$(uname -s)" in
 esac
 
 # find all .bash files, and sort by name, allowing each file to add ordering
-for path in $(find $(dirname $(dirname "$abs_path")) -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
+DOTFILE_HOME="$(dirname $(dirname "$abs_path"))"
+for path in $(find "$DOTFILE_HOME" -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
 do
-  source "$path"
+  source "$path" || true
 done
 unset path abs_path
