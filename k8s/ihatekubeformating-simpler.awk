@@ -1,48 +1,78 @@
-# functions 1024 based
-function normalize_Ti(used) {
-  if ( match(used, /([0-9]+)Ki/, value_split) )
-    return (sprintf("%.2f", int(value_split[1]) / 1024 / 1024 / 1024) "Ti")
-  else if ( match(used, /([0-9]+)Mi/, value_split) )
-    return (sprintf("%.2f", int(value_split[1]) / 1024 / 1024) "Ti")
-  else if ( match(used, /([0-9]+)Gi/, value_split) )
-    return (sprintf("%.2f", int(value_split[1]) / 1024) "Ti")
-  else if ( match(used, /([0-9]+)Ti/) )
-    return used
-  else
-    return (sprintf("%.2f", int(used) / 1024 / 1024 / 1024 / 1024) "Ti")
-}
-# functions 1000 based
-function normalize_k(used) {
-  if ( match(used, /([0-9]+)k/) )
-    return used
-  else if ( match(used, /([0-9]+)m/) )
-    return (sprintf("%.2f", int(used) / 1000 / 1000) "k")
-  else
-    return (sprintf("%.2f", int(used) / 1000) "k")
-}
-function normalize_no_unit(used) {
-  if ( match(used, /([0-9]+)m/) )
-    return sprintf("%.2f", int(used) / 1000)
-  else {
-    return used
+function split_unit(used, output) {
+  if ( match(used, /([0-9]+)Ki/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "Ki"
+    return 1
+  } else if ( match(used, /([0-9]+)Mi/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "Mi"
+    return 1
+  } else if ( match(used, /([0-9]+)Gi/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "Gi"
+    return 1
+  } else if ( match(used, /([0-9]+)Ti/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "Ti"
+    return 1
+  } else if ( match(used, /([0-9]+)k/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "k"
+    return 1
+  } else if ( match(used, /([0-9]+)m/, value_split) ) {
+    output[0] = int(value_split[1])
+    output[1] = "m"
+    return 1
+  } else if ( match(used, /([0-9]+)/, value_split) ) {
+		output[0] = int(value_split[1])
+    output[1] = "" # unknown unit
+    return 1
   }
+  return 0
 }
-
-# dynamic dispatch
-function normalize_units(used, hard) {
-  if ( match(hard, /[0-9]+Ti/) ) {
-    return normalize_Ti(used)
-  } else if ( match(hard, /[0-9]+k/) ) {
-    return normalize_k(used)
-  } else if ( match(hard, /[0-9]+/) ) {
-    return normalize_no_unit(used)
-  } else {
-    return used
+function to_unit(a, a_unit, b, b_unit) {
+  if (a_unit == b_unit)
+    return a
+  if (b_unit == "Ti") {
+    if (a_unit == "Ki")
+      return a / 1024 / 1024 / 1024
+    if (a_unit == "Mi")
+      return a / 1024 / 1024
+    if (a_unit == "Gi")
+      return a / 1024
+    if (a_unit == "")
+      return a / 1024 / 1024 / 1024 / 1024
+    print "unknown a unit: " a  a_unit " for b " b b_unit
+    exit 1
+  } else if (b_unit == "Gi") {
+    if (a_unit == "Ki")
+      return a / 1024 / 1024
+    if (a_unit == "Mi")
+      return a / 1024
+    if (a_unit == "Gi")
+      return a
+    if (a_unit == "")
+      return a / 1024 / 1024 / 1024
+    print "unknown a unit: " a  a_unit " for b " b b_unit
+    exit 1
+  } else if (b_unit == "k") {
+    if (a_unit == "")
+      return a / 1000
+    print "unknown a unit: " a  a_unit " for b " b b_unit
+    exit 1
   }
+  print "unknown b unit: " b b_unit " with a unit " a a_unit
+  exit 1
 }
 {
-  value = normalize_units($2, $3)
-  if (value != 0) {
-    printf "%-55s%-20s%s\n", $1, value, $3
+  if (split_unit($2, used) && split_unit($3, hard)) {
+    value = to_unit(used[0], used[1], hard[0], hard[1])
+    #value = normalize_units(unit, $2, $3)
+    if (value != 0) {
+      percentage = value / int(hard[0]) * 100
+      printf "%-55s%-20s%-20s%s\n", $1, (sprintf("%.2f", value) hard[1]), $3, sprintf("%.2f%", percentage)
+    }
+  } else {
+    print $0
   }
 }
