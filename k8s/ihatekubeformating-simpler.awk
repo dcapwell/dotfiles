@@ -74,6 +74,10 @@ function to_unit(a, a_unit, b, b_unit) {
       percentage = value / int(hard[0]) * 100
       printf "%-55s%-20s%-20s%s\n", $1, (sprintf("%.2f", value) hard[1]), $3, sprintf("%.2f%", percentage)
     }
+  } else if ($1 == "Resource" && $2 == "Used") {
+    printf "%-55s%-20s%-20s%s\n", "Resource", "Used", "Hard", "Used %"
+  } else if ($1 == "--------") {
+    printf "%-55s%-20s%-20s%s\n", "--------", "----", "----", "----"
   } else {
     print $0
   }
