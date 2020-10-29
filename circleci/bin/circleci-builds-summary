@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+_usage() {
+  cat <<EOF 1>&2
+Usage: $(basename $0) [gh user] [project]
+EOF
+  exit 1
+}
+
+_main() {
+  if [[ $# -lt 2 ]]; then
+    _usage
+  fi
+  local -r user="$1"
+  local -r project="$2"
+
+  if [[ -z "${txtylw:-}" ]]; then
+    # need to load the color formats
+    source "$bin/../../bash/002-colors.bash"
+  fi
+
+  curl -s "https://circleci.com/api/v1.1/project/github/$user/$project" \
+    | jq -r 'sort_by(.branch, .workflows.workflow_name, .workflows.job_name) 
+      | .[] 
+      | select(.status == "running" or .status == "not_running") 
+      | [.branch, .workflows.workflow_name, .workflows.job_name, .parallel, .status, .build_url] 
+      | @tsv' \
+    | sed "s;not_running;${txtylw}not_running${txtrst};g" \
+    | sed -E "s;([[:space:]])running;\1${txtred}running${txtrst};g"
+}
+
+_main "$@"
