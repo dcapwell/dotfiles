@@ -62,6 +62,12 @@ function to_unit(a, a_unit, b, b_unit) {
       return a / 1000 / 1000
     print "unknown a unit: " a  a_unit " for b " b b_unit
     exit 1
+  } else if (b_unit == "") {
+    if (a_unit == "" ) {
+      return a
+    } else if (a_unit == "m") {
+      return a / 1000
+    }
   }
   print "unknown b unit: " b b_unit " with a unit " a a_unit
   exit 1
