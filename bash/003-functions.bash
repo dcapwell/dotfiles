@@ -37,6 +37,10 @@ runn() {
 # Creates a template script. The script will have a main function and fail-fast.
 script-gen() {
   local name="$1"
+  if [[ -e "$name" ]]; then
+    echo "File $name exists" 1>&2
+    exit 1
+  fi
   cat <<EOF > "$name"
 #!/usr/bin/env bash
 
@@ -199,4 +203,13 @@ _histogram() {
 
 histogram() {
   bucket_count | _histogram
+}
+
+diff-removed() {
+  # Shows lines 'removed'.  This will show lines in 'src' which are no longer present in 'dest'
+  local -r src="$1"
+  local -r dest="$2"
+
+  # see https://stackoverflow.com/questions/18204904/fast-way-of-finding-lines-in-one-file-that-are-not-in-another
+  diff --new-line-format="" --unchanged-line-format="" <(sort "$src") <(sort "$dest")
 }
