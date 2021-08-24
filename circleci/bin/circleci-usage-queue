@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+_main() {
+  local -r user="${OD_USER:-${USER}}"
+  local -r project="$1"
+  local -r job_id="${2:-}"
+  if [[ ! -z "${job_id:-}" ]]; then
+    open "https://circleci.com/api/v1.1/project/github/${user}/${project}/${job_id}/usage-queue"
+  else
+    for build_num in $(curl -s "https://circleci.com/api/v1.1/project/github/$user/$project" | jq -r '.[] | select(.status == "not_running") | .build_num'); do
+      open "https://circleci.com/api/v1.1/project/github/${user}/${project}/${build_num}/usage-queue"
+    done
+  fi
+}
+
+_main "$@"
