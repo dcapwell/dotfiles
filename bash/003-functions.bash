@@ -213,3 +213,25 @@ diff-removed() {
   # see https://stackoverflow.com/questions/18204904/fast-way-of-finding-lines-in-one-file-that-are-not-in-another
   diff --new-line-format="" --unchanged-line-format="" <(sort "$src") <(sort "$dest")
 }
+
+loop() {
+  local count=1
+  local sleep_sec=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --sleep)
+        sleep_sec="$2"
+        shift 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+  while eval "$@"; do
+    count=$(( $count + 1 ))
+    sleep "$sleep_sec"
+  done
+  echo "failed at count $count" 1>&2
+  return 1
+}
