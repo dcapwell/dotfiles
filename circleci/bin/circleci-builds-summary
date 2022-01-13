@@ -34,7 +34,7 @@ _main() {
       | @tsv' \
     | sed "s;not_running;${txtylw}not_running${txtrst};g" \
     | sed -E "s;([[:space:]])running;\1${txtred}running${txtrst};g" \
-    | table
+    | table --postfix ' '
 }
 
 _main "$@"
