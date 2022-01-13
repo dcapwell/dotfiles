@@ -33,7 +33,8 @@ _main() {
       | [.branch, .workflows.workflow_name, .workflows.job_name, .parallel, .status, .build_url] 
       | @tsv' \
     | sed "s;not_running;${txtylw}not_running${txtrst};g" \
-    | sed -E "s;([[:space:]])running;\1${txtred}running${txtrst};g"
+    | sed -E "s;([[:space:]])running;\1${txtred}running${txtrst};g" \
+    | table
 }
 
 _main "$@"
