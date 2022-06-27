@@ -4,6 +4,7 @@ set -e
 set -o pipefail
 
 bin=$(cd $(dirname "$0"); pwd)
+export DOTFILE_HOME="$bin/.."
 
 # to force the colors to show up
 source $bin/../bash/*-colors.bash

@@ -1,0 +1,7 @@
+cat <<EOF
+/sbin
+$HOME/bin
+$DOTFILE_HOME/bin
+/usr/local/sbin
+/opt/homebrew/bin
+EOF

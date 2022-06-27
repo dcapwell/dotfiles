@@ -1,0 +1,15 @@
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+source "$DOTFILE_HOME/bash/000-os-functions.bash"
+
+# make sure aliases work for scripts
+shopt -s expand_aliases
+
+if is_osx ; then
+  if [[ $(dscl . -read ~/ UserShell | awk -F/ '{print $NF}') != 'bash' ]]; then
+    chsh -s /bin/bash
+  fi
+fi
