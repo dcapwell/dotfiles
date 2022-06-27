@@ -25,8 +25,8 @@ install_cask_package() {
     for pkg in "$@"
     do
       # check if installed first
-      if ! brew cask ls -1 | grep "$pkg" > /dev/null ; then
-        brew cask install "$pkg"
+      if ! brew ls -1 --cask | grep "$pkg" > /dev/null ; then
+        brew install --cask "$pkg"
       fi
     done
     return $?
