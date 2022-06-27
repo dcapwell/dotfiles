@@ -7,18 +7,18 @@ bin=`dirname "$0"`
 bin=`cd "$bin">/dev/null; pwd`
 
 git_plugins=(
-  "git://github.com/tpope/vim-sensible.git"
-  "git@github.com:kien/rainbow_parentheses.vim.git"
-  "git@github.com:guns/vim-clojure-static.git"
-  "git@github.com:guns/vim-clojure-highlight.git"
-  "git@github.com:tpope/vim-fireplace.git"
+  "https://github.com/tpope/vim-sensible.git"
+  "https://github.com/kien/rainbow_parentheses.vim.git"
+  "https://github.com/guns/vim-clojure-static.git"
+  "https://github.com/guns/vim-clojure-highlight.git"
+  "https://github.com/tpope/vim-fireplace.git"
   "https://github.com/scrooloose/nerdtree.git"
-  "git@github.com:elzr/vim-json.git"
-  "git://github.com/altercation/vim-colors-solarized.git"
-  "git@github.com:tfnico/vim-gradle.git"
-  "git@github.com:othree/xml.vim.git"
-  "git@github.com:derekwyatt/vim-scala.git"
-  "git@github.com:lambdatoast/elm.vim.git"
+  "https://github.com/elzr/vim-json.git"
+  "https://github.com/altercation/vim-colors-solarized.git"
+  "https://github.com/tfnico/vim-gradle.git"
+  "https://github.com/othree/xml.vim.git"
+  "https://github.com/derekwyatt/vim-scala.git"
+  "https://github.com/lambdatoast/elm.vim.git"
 )
 
 git_name() {
