@@ -7,11 +7,11 @@ if is_osx ; then
   setjdk() {
     if [ $# -ne 0 ]; then
       remove_from_path '/System/Library/Frameworks/JavaVM.framework/Home/bin'
-      if [ -n "${JAVA_HOME+x}" ]; then
+      if [[ ! -z "${JAVA_HOME:-}" ]]; then
         remove_from_path "$JAVA_HOME/bin"
       fi
       export JAVA_HOME=$(/usr/libexec/java_home -v "$@")
-      export PATH="$JAVA_HOME/bin:$PATH"
+      export PATH="$PATH:$JAVA_HOME/bin"
     fi
     echo "JAVA_HOME set to $JAVA_HOME"
     java -version
