@@ -15,7 +15,7 @@ if is_osx ; then
       if [[ "$version" -eq 8 ]]; then
         /usr/libexec/java_home --failfast -v 8 &> /dev/null || version="1.8"
       elif [[ "$version" -eq 1.8 ]]; then
-        /usr/libexec/java_home --failfast -v 1.8 &> /dev/null || version="8"
+        /usr/libexec/java_home --failfast -v "1.8" &> /dev/null || version="8"
       fi
       export JAVA_HOME=$(/usr/libexec/java_home -v "$version")
       export PATH="$PATH:$JAVA_HOME/bin"
