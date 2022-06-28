@@ -10,7 +10,14 @@ if is_osx ; then
       if [[ ! -z "${JAVA_HOME:-}" ]]; then
         remove_from_path "$JAVA_HOME/bin"
       fi
-      export JAVA_HOME=$(/usr/libexec/java_home -v "$@")
+      local version="$1"
+      # some JDKs only match as 1.8 and others are 8... so if 8 is used attempt to find the "best" version
+      if [[ "$version" -eq 8 ]]; then
+        /usr/libexec/java_home --failfast -v 8 &> /dev/null || version="1.8"
+      elif [[ "$version" -eq 1.8 ]]; then
+        /usr/libexec/java_home --failfast -v 1.8 &> /dev/null || version="8"
+      fi
+      export JAVA_HOME=$(/usr/libexec/java_home -v "$version")
       export PATH="$PATH:$JAVA_HOME/bin"
     fi
     echo "JAVA_HOME set to $JAVA_HOME"
