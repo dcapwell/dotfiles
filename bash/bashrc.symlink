@@ -27,6 +27,9 @@ if [[ "${DOTFILE_SET:-false}" == false ]]; then
   DOTFILE_SET=true
 fi
 
+# make sure aliases work for scripts
+shopt -s expand_aliases
+
 for path in $(find "$DOTFILE_HOME" -name "*.bash" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
 do
   source "$path" || true
