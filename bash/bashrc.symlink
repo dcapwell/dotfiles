@@ -22,9 +22,9 @@ if [[ "${DOTFILE_SET:-false}" == false ]]; then
       export PATH="$PATH:$p"
     done
   done
+  export FINAL_PATH="$PATH"
 
-  # don't export, new shell needs to reload
-  DOTFILE_SET=true
+  export DOTFILE_SET=true
 fi
 
 # make sure aliases work for scripts
