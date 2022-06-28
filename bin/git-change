@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+_main() {
+  local -r branch="$1"
+  local -r remote="${2:-upstream}"
+  git checkout "$branch"
+  git pull --rebase "$remote" "$branch"
+}
+
+_main "$@"
