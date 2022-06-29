@@ -6,3 +6,4 @@ libtool                       // needed or autogen doesn't work
 gnu-tar                       // because f mac
 csshX                         // Login to multiple hosts at a time
 cmake                         // for building native code
+fx                            // JSON interactive tool
