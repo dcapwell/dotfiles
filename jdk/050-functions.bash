@@ -14,7 +14,7 @@ if is_osx ; then
       # some JDKs only match as 1.8 and others are 8... so if 8 is used attempt to find the "best" version
       if [[ "$version" -eq 8 ]]; then
         /usr/libexec/java_home --failfast -v 8 &> /dev/null || version="1.8"
-      elif [[ "$version" -eq 1.8 ]]; then
+      elif [[ "$version" -eq "1.8" ]]; then
         /usr/libexec/java_home --failfast -v "1.8" &> /dev/null || version="8"
       fi
       export JAVA_HOME=$(/usr/libexec/java_home -v "$version")
