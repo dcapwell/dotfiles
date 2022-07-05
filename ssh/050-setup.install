@@ -23,6 +23,13 @@ main() {
   fi
   setup_config
   setup_github_keys
+  if [[ ! -e /etc/ssh/ssh_config.d/brew.conf ]]; then
+    cat <<EOF > /tmp/brew.conf.dotfiles
+Host *
+  Include $(brew --prefix)/etc/ssh_config
+EOF
+    sudo mv /tmp/brew.conf.dotfiles /etc/ssh/ssh_config.d/brew.conf
+  fi
 }
 
 main "$@"
