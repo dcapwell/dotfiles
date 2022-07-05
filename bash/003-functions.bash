@@ -34,13 +34,8 @@ runn() {
   seq $tasks | xargs -n 1 bash -c "$args" bash
 }
 
-# Creates a template script. The script will have a main function and fail-fast.
-script-gen() {
+_script-gen-bash() {
   local name="$1"
-  if [[ -e "$name" ]]; then
-    echo "File $name exists" 1>&2
-    exit 1
-  fi
   cat <<EOF > "$name"
 #!/usr/bin/env bash
 
@@ -73,6 +68,44 @@ _main() {
 
 _main "\$@"
 EOF
+}
+
+_script-gen-bash-python() {
+  local name="$1"
+  cat <<EOF > "$name"
+#!/usr/bin/env python3
+
+import argparse
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='<REPLACE ME>')
+  return parser.parse_args()
+
+def main():
+  args = parse_args()
+
+if __name__ == "__main__":
+    main()
+EOF
+}
+
+# Creates a template script. The script will have a main function and fail-fast.
+script-gen() {
+  local name="$1"
+  if [[ -e "$name" ]]; then
+    echo "File $name exists" 1>&2
+    return 1
+  fi
+  local extension
+  extension="${name##*.}"
+  if [ "$extension" == 'bash' ] || [ "$extension" == 'sh' ]; then
+    _script-gen-bash "$name"
+  elif [ "$extension" == 'py' ]; then
+    _script-gen-bash-python "$name"
+  else
+    echo "Unknown extension $extension for file $name; need .bash, .sh, or .py" 1>&2
+    return 1
+  fi
 
   chmod a+x "$name"
   "${VISUAL:-"${EDITOR:-vi}"}" "$name"
