@@ -79,6 +79,7 @@ import argparse
 
 def parse_args():
   parser = argparse.ArgumentParser(description='<REPLACE ME>')
+  parser.add_argument('--todo', type=str, help='<REPLACE ME>')
   return parser.parse_args()
 
 def main():
