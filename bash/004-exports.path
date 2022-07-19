@@ -4,4 +4,5 @@ $HOME/bin
 $DOTFILE_HOME/bin
 /usr/local/sbin
 /opt/homebrew/bin
+$HOME/Library/Python/*/bin
 EOF
