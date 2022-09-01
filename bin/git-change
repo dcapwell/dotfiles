@@ -10,10 +10,14 @@ bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
 _main() {
   local -r branch="$1"
   local default_remote
-  default_remote="$(git config --local --get branch."${branch}".remote)"
-  local -r remote="${2:-${default_remote}}"
+  default_remote="$(git config --local --get branch."${branch}".remote || true)"
+  local -r remote="${2:-${default_remote:-}}"
   git checkout "$branch"
-  git pull --rebase "$remote" "$branch"
+  if [[ ! -z "${remote:-}" ]]; then
+    git pull --rebase "$remote" "$branch"
+  else
+    echo "Branch $branch is not tracking a remote branch, if this is not expected run: git branch --set-upstream-to=<remote name>/$branch $branch"
+  fi
 }
 
 _main "$@"
