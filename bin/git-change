@@ -9,7 +9,9 @@ bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
 
 _main() {
   local -r branch="$1"
-  local -r remote="${2:-upstream}"
+  local default_remote
+  default_remote="$(git config --local --get branch."${branch}".remote)"
+  local -r remote="${2:-${default_remote}}"
   git checkout "$branch"
   git pull --rebase "$remote" "$branch"
 }
