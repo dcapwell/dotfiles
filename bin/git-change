@@ -8,7 +8,9 @@ set -o nounset
 bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
 
 _main() {
-  local -r branch="$1"
+  local current_branch
+  current_branch="$(git rev-parse --abbrev-ref HEAD)"
+  local -r branch="${1:-${current_branch}}"
   local default_remote
   default_remote="$(git config --local --get branch."${branch}".remote || true)"
   local -r remote="${2:-${default_remote:-}}"
