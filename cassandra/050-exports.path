@@ -1,0 +1,3 @@
+cat <<EOF
+$DOTFILE_HOME/cassandra/bin
+EOF
