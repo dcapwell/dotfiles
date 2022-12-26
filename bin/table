@@ -24,6 +24,7 @@ def parse_args():
     parser.add_argument('--delimiter', type=str, default=_DEFAULT_DELIMITER, help=f'What delimiter to use cross columns; default "{_DEFAULT_DELIMITER}"')
     parser.add_argument('--prefix', type=str, default=_DEFAULT_PREFIX, help=f'What to add in front of the column; default "{_DEFAULT_PREFIX}"')
     parser.add_argument('--postfix', type=str, default=_DEFAULT_POSTFIX, help=f'What to add after the column; default "{_DEFAULT_POSTFIX}"')
+    parser.add_argument('--columns', type=str, help='What numerical columns to include; default to all')
     return parser.parse_args()
 
 class Table:
@@ -57,10 +58,15 @@ class Table:
         return s
 
 args = parse_args()
+if args.columns:
+    args.columns = [int(a) for a in args.columns.split(',')]
 
 table = Table()
 for line in read('-'):
-    table.add(line.split())
+    row = line.split()
+    if args.columns:
+        row = [a for idx, a in enumerate(row) if idx in args.columns ]
+    table.add(row)
 s = table.__str__(delimiter=args.delimiter, prefix=args.prefix, postfix=args.postfix)
 if s:
     print(s)
