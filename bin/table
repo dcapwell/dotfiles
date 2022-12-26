@@ -4,6 +4,10 @@ import fileinput
 import sys
 import argparse
 
+_DEFAULT_DELIMITER = '|'
+_DEFAULT_PREFIX = ' '
+_DEFAULT_POSTFIX = ' '
+
 def normalize(value, size):
     for ignore in range(0, size - len(value)):
         value += ' '
@@ -17,9 +21,9 @@ def read(to_read):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Table')
-    parser.add_argument('--delimiter', type=str, default='', help='What delimiter to use cross columns')
-    parser.add_argument('--prefix', type=str, default='', help='What to add in front of the column')
-    parser.add_argument('--postfix', type=str, default='', help='What to add after the column')
+    parser.add_argument('--delimiter', type=str, default=_DEFAULT_DELIMITER, help=f'What delimiter to use cross columns; default "{_DEFAULT_DELIMITER}"')
+    parser.add_argument('--prefix', type=str, default=_DEFAULT_PREFIX, help=f'What to add in front of the column; default "{_DEFAULT_PREFIX}"')
+    parser.add_argument('--postfix', type=str, default=_DEFAULT_POSTFIX, help=f'What to add after the column; default "{_DEFAULT_POSTFIX}"')
     return parser.parse_args()
 
 class Table:
@@ -38,7 +42,7 @@ class Table:
             current = max(current, len(row[i]))
             self.sizes[i] = current
 
-    def __str__(self, delimiter='|', prefix=' ', postfix=' '):
+    def __str__(self, delimiter=_DEFAULT_DELIMITER, prefix=_DEFAULT_PREFIX, postfix=_DEFAULT_POSTFIX):
         s = ""
         for row in self.rows:
             # add extra columns if needed
