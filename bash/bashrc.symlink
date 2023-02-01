@@ -16,15 +16,19 @@ export DOTFILE_HOME="$(dirname $(dirname "$abs_path"))"
 # Add to path
 if [[ "${DOTFILE_SET:-false}" == false ]]; then
   export ORIGINAL_PATH="$PATH"
+  _local_path=""
   for path in $(find "$DOTFILE_HOME" -name "*.path" | perl -e "print sort{(split '/', \$a)[-1] <=> (split '/', \$b)[-1]}<>")
   do
     for p in $(bash "$path"); do
-      export PATH="$PATH:$p"
+      _local_path="${_local_path}:$p"
     done
   done
+  export PATH="${_local_path}:$ORIGINAL_PATH"
   export FINAL_PATH="$PATH"
 
   export DOTFILE_SET=true
+else
+  export PATH="${FINAL_PATH}"
 fi
 
 # make sure aliases work for scripts
