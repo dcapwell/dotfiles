@@ -74,4 +74,5 @@
 [init]
 	defaultBranch = trunk
 [diff]
-	noprefix = true
+  # true causes more issues than anything... leave it false; stuff like patch break!
+	noprefix = false
