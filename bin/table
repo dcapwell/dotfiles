@@ -35,6 +35,7 @@ class Table:
     def add(self, row):
         if not row:
             return
+        row = [i for i in map(str, row)]
         self.rows.append(row)
         for i in range(0, len(row) - len(self.sizes)):
             self.sizes.append(0)
