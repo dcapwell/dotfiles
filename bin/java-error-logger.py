@@ -13,7 +13,7 @@ def _strip_timestamps(line):
     return re.sub('\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d', 'TIMESTAMP', line)
 
 def _clean_threads(line):
-    return re.sub('\[(.*)\]', lambda result: '[' + re.sub('(-\d+)', '-num', result.group(1)) + ']', line)
+    return re.sub('\[(.*)\]', lambda result: '[' + re.sub('(-?\d+)', '-num', result.group(1)) + ']', line)
 
 LEVELS = ['DEBUG', 'INFO', 'WARN', 'ERROR']
 
