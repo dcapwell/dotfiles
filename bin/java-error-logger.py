@@ -7,6 +7,8 @@ def parse_args():
   parser = argparse.ArgumentParser(description='<REPLACE ME>')
   parser.add_argument('file', type=str, help='<REPLACE ME>')
   parser.add_argument('--warn', action='store_true', help='<REPLACE ME>')
+  parser.add_argument('--ignore-message', action='store_true', help='TODO')
+  parser.add_argument('--min-count', type=int, default=1, help='')
   return parser.parse_args()
 
 def _strip_timestamps(line):
@@ -33,7 +35,10 @@ def main():
               if previous_line:
                 accum = group_by.get(previous_line, 0)
                 group_by[previous_line] = accum + 1
-              previous_line = line
+              if args.ignore_message:
+                  previous_line = ''
+              else:
+                  previous_line = line
           else:
               previous_line = f'{previous_line}\n{line}'
   if previous_line:
@@ -44,7 +49,7 @@ def main():
       first_word = k.split()[0]
       if args.warn and first_word not in ['WARN', 'ERROR']:
           continue
-      if v > 1:
+      if v > args.min_count:
           print(f'Line\n{k}\nCount: {v}')
 
 if __name__ == "__main__":
