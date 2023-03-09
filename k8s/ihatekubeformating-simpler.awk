@@ -77,8 +77,14 @@ function to_unit(a, a_unit, b, b_unit) {
     value = to_unit(used[0], used[1], hard[0], hard[1])
     #value = normalize_units(unit, $2, $3)
     if (value != 0) {
-      percentage = value / int(hard[0]) * 100
-      printf "%-55s%-20s%-20s%s\n", $1, (sprintf("%.2f", value) hard[1]), $3, sprintf("%.2f%", percentage)
+      if (int(hard[0]) == 0) {
+        percentage = 0
+      } else {
+        percentage = value / int(hard[0]) * 100
+      }
+      printf "%-55s%-20s%-20s%s\n", $1, sprintf("%.2f%s", value, hard[1]), $3, sprintf("%.2f%", percentage)
+    } else {
+      printf "%-55s%-20s%-20s%s\n", $1, 0, $3, sprintf("%.2f%", 0)
     }
   } else if ($1 == "Resource" && $2 == "Used") {
     printf "%-55s%-20s%-20s%s\n", "Resource", "Used", "Hard", "Used %"
