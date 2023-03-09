@@ -30,7 +30,7 @@ _main() {
     | jq -r 'sort_by(.branch, .workflows.workflow_name, .workflows.job_name) 
       | .[] 
       | select(.status == "running" or .status == "not_running") 
-      | [.branch, .workflows.workflow_name, .workflows.job_name, .parallel, .status, .build_url] 
+      | [.branch, .workflows.workflow_name, .workflows.job_name, .parallel, .status, .committer_date, .usage_queued_at, .build_url] 
       | @tsv' \
     | sed "s;not_running;${txtylw}not_running${txtrst};g" \
     | sed -E "s;([[:space:]])running;\1${txtred}running${txtrst};g" \
