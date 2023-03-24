@@ -31,3 +31,6 @@ alias map="xargs -n1"
 alias hex2dec='printf "%d\n"'
 
 alias say='say -v Daniel'
+
+alias download_latest='(ls -1trd ~/Downloads/* | tail -n 1)'
+alias dl=download_latest
