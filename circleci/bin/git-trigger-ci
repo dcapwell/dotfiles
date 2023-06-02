@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-#set -o xtrace
-set -o errexit
-set -o pipefail
-set -o nounset
-
-git commit --allow-empty -m 'trigger ci'

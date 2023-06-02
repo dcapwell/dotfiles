@@ -1,4 +1,0 @@
-cat <<EOF
-$DOTFILE_HOME/circleci/bin
-$DOTFILE_HOME/circleci/local/bin
-EOF
