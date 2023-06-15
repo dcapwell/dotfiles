@@ -26,6 +26,7 @@ _main() {
   local scratch_branch="${branch}.deleteme"
   
   if [[ "$current_branch" == "$branch" ]]; then
+    git branch -D "$scratch_branch" 2>/dev/null || true
     git checkout -b "$scratch_branch"
   fi
 
