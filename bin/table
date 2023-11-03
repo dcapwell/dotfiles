@@ -26,6 +26,8 @@ def parse_args():
     parser.add_argument('--columns', type=str, help='What numerical columns to include; default to all')
     parser.add_argument('--split-by', type=str, help='Token to split the line by')
     parser.add_argument('--max-col-length', type=int, help='Max length a column may be')
+    parser.add_argument('--ignore-comments', action='store_true', help='Avoid trying to parse comments to put into the table and instead let them pass through')
+    parser.add_argument('--num-columns', type=int, default=-1, help='How many columns should exist')
     return parser.parse_args()
 
 class Table:
@@ -65,13 +67,23 @@ def limit(line, length):
         updated += '...'
     return updated
 
+def is_comment(line):
+    return line.startswith('#') or line.startswith('//')
+
 args = parse_args()
 if args.columns:
     args.columns = [int(a) for a in args.columns.split(',')]
+if args.num_columns != -1:
+    # if you say 3 columns you get 4 with str.split, so remove one
+    args.num_columns = args.num_columns - 1
 
 table = Table()
 for line in read('-'):
-    row = line.split() if not args.split_by else line.split(args.split_by)
+    if args.ignore_comments and is_comment(line):
+        # line has a newline so don't add another one
+        print(line, end='')
+        continue
+    row = line.split(maxsplit=args.num_columns) if not args.split_by else line.split(args.split_by, maxsplit=args.num_columns)
     row = [i.strip() for i in row]
     if args.columns:
         row = [a for idx, a in enumerate(row) if idx in args.columns ]
