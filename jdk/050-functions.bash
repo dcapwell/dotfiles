@@ -24,8 +24,8 @@ if is_osx ; then
     java -version
   }
 
-  # Default to jdk 8
-  setjdk 8
+  # Default to jdk 11
+  setjdk 11
 fi
 
 jvm_memory_watch() {
