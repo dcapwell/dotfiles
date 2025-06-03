@@ -73,7 +73,14 @@ EOF
 _script-gen-bash-python() {
   local name="$1"
   cat <<EOF > "$name"
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script --python python3
+# If an index is needed, add "--index-url https://pypi.example.com/simple"
+# If uv is not desired, can switch back to '#!/usr/bin/env python3'
+
+# /// script
+# dependencies = [
+# ]
+# ///
 
 import argparse
 
