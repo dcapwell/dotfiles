@@ -34,3 +34,7 @@ alias say='say -v Daniel'
 
 alias download_latest='(ls -1trd ~/Downloads/* | tail -n 1)'
 alias dl=download_latest
+
+# Replace vim with NeoVim
+alias vim=nvim
+alias vi=nvim
