@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+home="$(cd "$(dirname "$0")/.." > /dev/null; pwd)"
+
+kubectl describe resourcequotas "$@" | gawk -f "${home}/k8s/ihatekubeformating-simpler.awk"
