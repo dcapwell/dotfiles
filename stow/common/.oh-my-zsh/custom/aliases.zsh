@@ -19,6 +19,12 @@ alias .......="cd ../../../../../.."
 alias ........="cd ../../../../../../.."
 alias -- -="cd -"
 
+# Reload the shell
+alias reload="exec $SHELL -l"
+
+# Runs curl as a JSON post request
+alias curl-json="curl -X POST -H'Content-Type: application/json'"
+
 alias is_osx='[[ "$(uname -s)" == "Darwin" ]]'
 alias is_linux='[[ "$(uname -s)" == "Linux" ]]'
 alias is_rhel='type yum > /dev/null 2>&1'

@@ -3,6 +3,11 @@ remove_from_path() {
   export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
 
+# Create a new directory and enter it
+mkd() {
+  mkdir -p "$@" && cd "$_"
+}
+
 if is_osx ; then
   # solution from http://superuser.com/questions/490425/how-do-i-switch-between-java-7-and-java-6-on-os-x-10-8-2
   # format:
