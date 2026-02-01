@@ -1,0 +1,26 @@
+#!/bin/bash
+# Show lines present in src but not in dest
+# Usage: diff-removed src dest
+
+set -e
+
+if [[ $# -ne 2 ]]; then
+  echo "Usage: diff-removed src dest" >&2
+  echo "Shows lines in src that are not present in dest" >&2
+  exit 1
+fi
+
+src="$1"
+dest="$2"
+
+if [[ ! -f "$src" ]]; then
+  echo "Error: $src not found" >&2
+  exit 1
+fi
+
+if [[ ! -f "$dest" ]]; then
+  echo "Error: $dest not found" >&2
+  exit 1
+fi
+
+diff --new-line-format="" --unchanged-line-format="" <(sort "$src") <(sort "$dest")

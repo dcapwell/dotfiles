@@ -1,0 +1,22 @@
+#!/bin/bash
+# Read values from stdin and display a text histogram
+# Usage: echo -e "a\na\nb\na\nc" | histogram
+
+# Count and sort
+counts=$(sort | uniq -c | awk '{print $2, $1}')
+
+# Find max for scaling
+max=$(echo "$counts" | awk '{if ($2 > max) max = $2} END {print max}')
+
+# Terminal width minus space for labels
+width=${COLUMNS:-80}
+bar_width=$((width - 15))
+
+echo "$counts" | while read -r key value; do
+  if [[ -n "$key" ]]; then
+    # Scale bar to terminal width
+    bar_len=$((value * bar_width / max))
+    bar=$(printf "%${bar_len}s" | tr ' ' '=')
+    printf "%8s %4d %s\n" "$key" "$value" "$bar"
+  fi
+done

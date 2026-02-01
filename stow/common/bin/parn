@@ -1,0 +1,25 @@
+#!/bin/bash
+# Run a command N times in parallel
+# Usage: parn N command [args...]
+
+set -e
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: parn N command [args...]" >&2
+  exit 1
+fi
+
+if [[ "$1" == *[!0-9]* ]]; then
+  echo "Error: first argument must be a number" >&2
+  exit 1
+fi
+
+n="$1"
+shift
+
+# Use 2x CPU count for parallelism
+par=$(( 2 * $(sysctl -n hw.ncpu) ))
+
+# Run command n times in parallel using xargs
+# -I_ means replace _ with input (but we don't use it in the command)
+printf '%s\n' $(seq "$n") | xargs -n1 -P "$par" -I_ "$@"

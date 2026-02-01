@@ -1,0 +1,8 @@
+#!/bin/bash
+# Start a simple HTTP server in the current directory
+# Usage: http-server [port]
+
+port="${1:-8000}"
+
+echo "Starting server at http://localhost:$port"
+python3 -m http.server "$port"
