@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+lsof -nP -i4TCP:7010 | grep LISTEN

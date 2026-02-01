@@ -1,0 +1,29 @@
+#!/usr/bin/env -S uv run --script --python python3
+
+# /// script
+# dependencies = [
+# ]
+# ///
+
+import argparse
+
+from pathlib import Path
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Display the fully qualified path to a file"
+    )
+    parser.add_argument("src", type=str, help="File to get the path to")
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+
+    path = Path(args.src).resolve().expanduser()
+    print(path)
+
+
+if __name__ == "__main__":
+    main()

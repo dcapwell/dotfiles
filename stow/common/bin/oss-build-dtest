@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+error() {
+  echo "$*" 1>&2
+  exit 1
+}
+
+build() {
+  local -r branch="$1"
+  local -r dir="$2"
+
+  echo "Attempting to build $branch in $dir"
+  cd "$dir"
+  rm -rf build || true
+  git checkout "$branch"
+  git pull --rebase upstream "$branch"
+  ant jar dtest-jar
+}
+
+_main() {
+  local prefix="$HOME/src/github/apache/cassandra"
+  local branches=(
+    cassandra-2.2
+    cassandra-3.0
+    cassandra-3.11
+    cassandra-4.0
+    trunk
+  )
+  local path
+  local outter_path
+  local inner_path
+  local pids=()
+  for branch in "${branches[@]}"; do
+    path="${prefix}/$(echo "$branch" | sed 's;cassandra-;;g')"
+    build "$branch" "$path" &
+    pids+=( $! )
+  done
+  local idx=0
+  local failed_builds=()
+  for pid in "${pids[@]}"; do
+    if ! wait "$pid" ; then
+      echo "###### ERROR #### Unable to build ${branches[$idx]}"
+      failed_builds+=( "${branches[$idx]}" )
+    else
+      echo "###### SUCCESS #### Built ${branches[$idx]} successfully"
+    fi
+    idx=$(( $idx + 1 ))
+  done
+  echo "checking if there were failed builds"
+  if [[ ${#failed_builds[@]} -gt 0 ]]; then
+    echo "There were failed builds... ${failed_builds[@]}"
+    exit 1
+  else
+    echo "All builds were success!"
+  fi
+  for outter in "${branches[@]}"; do
+    for inner in "${branches[@]}"; do
+      if [[ "$outter" == "$inner" ]]; then
+        continue
+      fi
+      outter_path="${prefix}/$(echo "$outter" | sed 's;cassandra-;;g')"
+      inner_path="${prefix}/$(echo "$inner" | sed 's;cassandra-;;g')"
+      cp "$outter_path"/build/dtest-* "$inner_path/build" || error "Unable to copy dtest jars from $outter to $inner"
+    done
+  done
+}
+
+_main "$@"
