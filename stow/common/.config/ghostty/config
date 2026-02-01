@@ -1,0 +1,12 @@
+# ghostty +show-config --default --docs
+# To reload config: Cmd + Shift + , (or restart Ghostty)
+
+
+# See https://github.com/ghostty-org/ghostty/discussions/3610
+# Setup Quick Terminal to launch with Control + \
+keybind = global:ctrl+backslash=toggle_quick_terminal
+
+# List of keybindings not to forget
+# opt+cmd+arrow keys  -- move between splits
+# cmd+shift+enter     -- Focus on current split
+# shift+cmd+p         -- command bar to search / execute actions
