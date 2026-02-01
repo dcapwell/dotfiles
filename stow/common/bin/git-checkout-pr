@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+usage() {
+  cat <<EOF
+Usage: $(basename $0) [pr number] (remote name)?
+EOF
+  exit 1
+}
+
+_main() {
+  if [[ $# -eq 0 ]]; then
+    usage
+  fi
+  local -r pr="$1"
+  local -r remote="${2:-origin}"
+  local -r branch="pr/${remote}_${pr}"
+  local current_branch
+  current_branch="$(git rev-parse --abbrev-ref HEAD)"
+  local scratch_branch="${branch}.deleteme"
+  
+  if [[ "$current_branch" == "$branch" ]]; then
+    git branch -D "$scratch_branch" 2>/dev/null || true
+    git checkout -b "$scratch_branch"
+  fi
+
+  git fetch "$remote" "pull/${pr}/head:${branch}"
+  git checkout "${branch}"
+
+  if [[ "$current_branch" == "$branch" ]]; then
+    git branch -D "$scratch_branch"
+  fi
+
+}
+
+_main "$@"

@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+_script-gen-bash() {
+  local name="$1"
+  cat <<EOF > "$name"
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="\$(cd "\$(dirname "\$0")" > /dev/null; pwd)"
+
+_main() {
+  # select action type
+  # local action=\${1:-all}
+  # case "\$action" in
+  #   *)
+  #     echo "Unknown action: \$action" 1>\&2
+  #     exit 1
+  #     ;;
+  # esac
+
+  # loop over args, executing as in order of execution
+  # while [ \$# -gt 0 ]; do
+  #   case "\$1" in
+  #     *)
+  #       break
+  #       ;;
+  #   esac
+  # done
+}
+
+_main "\$@"
+EOF
+}
+
+_script-gen-bash-python() {
+  local name="$1"
+  cat <<EOF > "$name"
+#!/usr/bin/env -S uv run --script --python python3
+# If an index is needed, add "--index-url https://pypi.example.com/simple"
+# If uv is not desired, can switch back to '#!/usr/bin/env python3'
+
+# /// script
+# dependencies = [
+# ]
+# ///
+
+import argparse
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='<REPLACE ME>')
+  parser.add_argument('--todo', type=str, help='<REPLACE ME>')
+  parser.add_argument('--somebool', action='store_true', help='<REPLACE ME>')
+  return parser.parse_args()
+
+def main():
+  args = parse_args()
+
+if __name__ == "__main__":
+    main()
+EOF
+}
+
+# Creates a template script. The script will have a main function and fail-fast.
+_main() {
+  if [[ $# -eq 0 ]]; then
+    cat <<EOF
+Usage: $(basename "$0") [file name]
+EOF
+    exit 1
+  fi
+  local name="$1"
+  if [[ -e "$name" ]]; then
+    echo "File $name exists" 1>&2
+    return 1
+  fi
+  local extension
+  extension="${name##*.}"
+  if [ "$extension" == 'bash' ] || [ "$extension" == 'sh' ]; then
+    _script-gen-bash "$name"
+  elif [ "$extension" == 'py' ]; then
+    _script-gen-bash-python "$name"
+  else
+    echo "Unknown extension $extension for file $name; need .bash, .sh, or .py" 1>&2
+    return 1
+  fi
+
+  chmod a+x "$name"
+  "${VISUAL:-"${EDITOR:-vi}"}" "$name"
+}
+
+_main "$@"

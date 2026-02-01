@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+
+import fileinput
+import argparse
+
+_DEFAULT_DELIMITER = '|'
+_DEFAULT_PREFIX = ' '
+_DEFAULT_POSTFIX = ' '
+
+def normalize(value, size):
+    for ignore in range(0, size - len(value)):
+        value += ' '
+    return value
+
+def read(to_read):
+    if to_read == '-':
+        return fileinput.input(files='-')
+    else:
+        return fileinput.input(files=to_read)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Table')
+    parser.add_argument('--delimiter', type=str, default=_DEFAULT_DELIMITER, help=f'What delimiter to use cross columns; default "{_DEFAULT_DELIMITER}"')
+    parser.add_argument('--prefix', type=str, default=_DEFAULT_PREFIX, help=f'What to add in front of the column; default "{_DEFAULT_PREFIX}"')
+    parser.add_argument('--postfix', type=str, default=_DEFAULT_POSTFIX, help=f'What to add after the column; default "{_DEFAULT_POSTFIX}"')
+    parser.add_argument('--columns', type=str, help='What numerical columns to include; default to all')
+    parser.add_argument('--split-by', type=str, help='Token to split the line by')
+    parser.add_argument('--max-col-length', type=int, help='Max length a column may be')
+    parser.add_argument('--ignore-comments', action='store_true', help='Avoid trying to parse comments to put into the table and instead let them pass through')
+    parser.add_argument('--num-columns', type=int, default=-1, help='How many columns should exist')
+    return parser.parse_args()
+
+class Table:
+    def __init__(self):
+        self.sizes = []
+        self.rows = []
+
+    def add(self, row):
+        if not row:
+            return
+        row = [i for i in map(str, row)]
+        self.rows.append(row)
+        # if there are more row elements than sizes seen so far, provide default size
+        for i in range(0, len(row) - len(self.sizes)):
+            self.sizes.append(0)
+        for i in range(0, len(row)):
+            self.sizes[i] = max(self.sizes[i], len(row[i]))
+
+    def __str__(self, delimiter=_DEFAULT_DELIMITER, prefix=_DEFAULT_PREFIX, postfix=_DEFAULT_POSTFIX):
+        s = ""
+        for row in self.rows:
+            # add extra columns if needed
+            for i in range(len(row), len(self.sizes)):
+                row.append('')
+            for i in range(0, len(row)):
+                size = self.sizes[i]
+                s += f'{delimiter}{prefix}{normalize(row[i], size)}{postfix}'
+            s += f"{delimiter}\n"
+        if s:
+            # trim the last "\n"
+            s = s[:-1]
+        return s
+
+def limit(line, length):
+    updated = line[:length]
+    if updated is not line:
+        updated += '...'
+    return updated
+
+def is_comment(line):
+    return line.startswith('#') or line.startswith('//')
+
+args = parse_args()
+if args.columns:
+    args.columns = [int(a) for a in args.columns.split(',')]
+if args.num_columns != -1:
+    # if you say 3 columns you get 4 with str.split, so remove one
+    args.num_columns = args.num_columns - 1
+
+table = Table()
+for line in read('-'):
+    if args.ignore_comments and is_comment(line):
+        # line has a newline so don't add another one
+        print(line, end='')
+        continue
+    row = line.split(maxsplit=args.num_columns) if not args.split_by else line.split(args.split_by, maxsplit=args.num_columns)
+    row = [i.strip() for i in row]
+    if args.columns:
+        row = [a for idx, a in enumerate(row) if idx in args.columns ]
+    if args.max_col_length:
+        row = [limit(i, args.max_col_length) for i in row]
+    table.add(row)
+s = table.__str__(delimiter=args.delimiter, prefix=args.prefix, postfix=args.postfix)
+if s:
+    print(s)

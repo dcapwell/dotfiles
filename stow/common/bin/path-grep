@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+bin="$(cd "$(dirname "$0")" > /dev/null; pwd)"
+
+_main() {
+  local -r pattern="$1"
+  for pd in $(echo "$PATH" | tr ':' '\n'); do
+    if [[ ! -d "$pd" ]]; then
+      continue
+    fi
+    for name in $(ls -1 "$pd"); do
+      if echo "$name" | grep "$pattern" &> /dev/null; then
+        echo "$pd/$name" | grep "$pattern" --color
+      fi
+    done
+  done
+}
+
+_main "$@"
