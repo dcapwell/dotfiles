@@ -16,6 +16,7 @@
 
 [merge]
   tool = vimdiff
+  conflictStyle = zdiff3
 
 [gui]
   spellingdictionary = en
@@ -26,6 +27,7 @@
 [core]
   excludesfile = ~/.gitignore
   editor = nvim
+  pager = delta
   # Treat spaces before tabs and all kinds of trailing whitespace as an error
   # [default] trailing-space: looks for spaces at the end of a line
   # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
@@ -79,6 +81,14 @@
 [diff]
   # true causes more issues than anything... leave it false; stuff like patch break!
 	noprefix = false
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+  #side-by-side = true
+	hunk-header-decoration-style=ul
 
 [include]
   path = ~/.gitconfig_local
