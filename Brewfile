@@ -6,6 +6,7 @@ brew "stow"
 brew "tree"
 brew "curl"
 brew "jq"
+brew "fx"         # TUI for JSON
 brew "watch"
 brew "duckdb"
 brew "pstree"
