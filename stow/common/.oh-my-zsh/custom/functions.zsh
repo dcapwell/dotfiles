@@ -8,6 +8,29 @@ mkd() {
   mkdir -p "$@" && cd "$_"
 }
 
+# Cross-platform clipboard
+clipboard() {
+  if is_osx; then
+    pbcopy
+  elif is_linux; then
+    xclip -selection clipboard
+  else
+    echo "Unable to find clipboard commands" >&2
+    return 1
+  fi
+}
+
+# Create a temporary sandbox directory and cd into it
+# Exit the subshell to return to original directory and cleanup
+tmp_sandbox() {
+  local tmpdir
+  tmpdir=$(mktemp -d -t "tmp_sandbox.XXXXXXXXXX")
+  echo "Created sandbox: $tmpdir"
+  (cd "$tmpdir" && exec $SHELL)
+  echo "Cleaning up sandbox..."
+  rm -rf "$tmpdir"
+}
+
 if is_osx ; then
   # solution from http://superuser.com/questions/490425/how-do-i-switch-between-java-7-and-java-6-on-os-x-10-8-2
   # format:

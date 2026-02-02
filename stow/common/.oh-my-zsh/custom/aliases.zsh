@@ -29,3 +29,14 @@ alias is_osx='[[ "$(uname -s)" == "Darwin" ]]'
 alias is_linux='[[ "$(uname -s)" == "Linux" ]]'
 alias is_rhel='type yum > /dev/null 2>&1'
 alias is_ubuntu='type apt-get > /dev/null 2>&1'
+
+# GNU Tree command built from linux primitives
+alias ltree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' | less"
+
+# Hex to decimal conversion
+alias hex2dec='printf "%d\n"'
+
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
