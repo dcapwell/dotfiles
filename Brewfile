@@ -11,6 +11,11 @@ brew "watch"
 brew "duckdb"
 brew "pstree"
 brew "opencode"
+brew "mc"         # Directory TUI
+brew "posting"    # HTTP API TUI, bring the postman website into the term
+brew "ncdu"       # TUI replacement for du
+brew "btop"       # TUI hardware perf monitor
+brew "ntfy"       # CLI to send notifications
 
 # Modern replacements
 brew "fd"         # find replacement
@@ -25,6 +30,7 @@ brew "bat"
 brew "glow"
 brew "just"       # Modern make files
 brew "zsh"        # Better Bash
+brew "nu"         # Non-POSIX shell focused on making piping amazing
 
 # Build tools
 brew "cmake"
@@ -33,6 +39,7 @@ brew "libtool"
 brew "gnu-tar"
 brew "shellcheck"
 brew "uv"
+brew "entr"       # Monitor for file changes and run a command
 
 # Cask applications
 cask "ghostty"
