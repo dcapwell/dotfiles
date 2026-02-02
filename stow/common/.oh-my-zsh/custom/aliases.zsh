@@ -40,6 +40,3 @@ alias hex2dec='printf "%d\n"'
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
-
-# youtube-transcript.py is in the bin folder, but its name is too long!
-alias yt="youtube-transcript.py"
