@@ -1,5 +1,7 @@
 # Override the `cd` command to be `z`
 ZOXIDE_CMD_OVERRIDE=cd
+# fzf should use preview with bat
+export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
 
 
 # Set the default them to be the fork of robbyrussell
