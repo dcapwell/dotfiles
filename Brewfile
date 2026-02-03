@@ -7,6 +7,7 @@ brew "tree"       # Display directory structure as a tree
 brew "curl"       # Command-line HTTP client
 brew "jq"         # JSON processor and query language
 brew "fx"         # TUI for JSON
+brew "yq"         # jq but for YAML
 brew "watch"      # Execute a command periodically and display output
 brew "duckdb"     # In-process SQL OLAP database
 brew "pstree"     # Display running processes as a tree
