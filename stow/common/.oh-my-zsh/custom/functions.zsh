@@ -1,3 +1,13 @@
+# Enable edit-command-line (Ctrl+X Ctrl+E) to open current command in $EDITOR
+#
+# The vi-mode plugin (enabled in .zshrc) uses vim-style keybindings which don't
+# include the Emacs-style Ctrl+X Ctrl+E binding by default. In vi-mode, pressing
+# 'v' in command mode (after Escape) opens the editor, but this explicitly adds
+# the Ctrl+X Ctrl+E binding for muscle memory compatibility.
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
 # remove a element from the current PATH
 remove_from_path() {
   export PATH=$(echo "$PATH" | sed -E -e "s;:$1;;" -e "s;$1:?;;")
