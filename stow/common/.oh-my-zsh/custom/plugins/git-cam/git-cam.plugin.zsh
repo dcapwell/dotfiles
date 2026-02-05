@@ -1,7 +1,8 @@
 # git-cam - auto-message commit trigger
 #
 # Trigger:
-#   git cam<tab> - expands to: git cam "$(git auto-message)"
+#   git cam<tab>       - expands to: git cam "$(git auto-message)"
+#   git cam <args><tab> - expands to: git cam <args> "$(git auto-message)"
 #
 # Requires:
 #   git-auto-message script in PATH (uses ollama to generate commit messages)
@@ -11,8 +12,10 @@ typeset -gA _git_cam
 _git_cam_complete() {
   local lbuf="$LBUFFER"
 
-  # Match "git cam" standalone at end of buffer
-  if [[ "$lbuf" == "git cam" || "$lbuf" == *" git cam" ]]; then
+  # Match "git cam" with optional trailing space and args
+  if [[ "$lbuf" == "git cam" || "$lbuf" == *" git cam" || "$lbuf" == "git cam "* || "$lbuf" == *" git cam "* ]]; then
+    # Trim trailing whitespace before appending
+    LBUFFER="${lbuf%% }"
     LBUFFER+=' "$(git auto-message)"'
     zle reset-prompt
     return
