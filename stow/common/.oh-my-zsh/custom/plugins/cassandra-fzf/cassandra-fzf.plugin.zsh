@@ -7,6 +7,8 @@
 #   test/unit/org/apache/cassandra/index/sai/utils/IndexTermTypeTest.java
 #   → org.apache.cassandra.index.sai.utils.IndexTermTypeTest
 
+typeset -gA _cassandra_fzf
+
 __cassandra_fzf_testclass() {
   local selected
   selected=$(fd -t f '\.java$' test 2>/dev/null | fzf --height=40% --reverse)
@@ -35,18 +37,34 @@ _cassandra_fzf_complete() {
     selection=$(__cassandra_fzf_testclass)
     [[ -n "$selection" ]] && LBUFFER+="${LBUFFER:+ }$selection"
     zle reset-prompt
-  # Check for git-fzf triggers
-  elif (( $+functions[_git_fzf_complete_inner] )) && _git_fzf_complete_inner; then
-    zle reset-prompt
+    return
+  fi
+
+  # Fallback to saved widget
+  local km="${KEYMAP:-main}"
+  local orig_widget="${_cassandra_fzf[orig_widget_$km]}"
+  [[ -z "$orig_widget" && "$km" != "main" ]] && orig_widget="${_cassandra_fzf[orig_widget_main]}"
+
+  if [[ -n "$orig_widget" && "$orig_widget" != "_cassandra_fzf_complete" ]]; then
+    zle "$orig_widget"
   else
-    # Fall back to fzf-completion
-    if (( $+widgets[fzf-completion] )); then
-      zle fzf-completion
-    else
-      zle ${fzf_default_completion:-expand-or-complete}
-    fi
+    zle expand-or-complete
   fi
 }
 
 zle -N _cassandra_fzf_complete
-bindkey '^I' _cassandra_fzf_complete
+
+# Save current ^I binding and rebind
+() {
+  local keymap binding orig_widget
+  local -a keymaps=(main emacs viins vicmd visual)
+
+  for keymap in $keymaps; do
+    binding=$(bindkey -M "$keymap" '^I' 2>/dev/null) || binding=""
+    orig_widget="${binding##* }"
+    if [[ -n "$binding" && -n "$orig_widget" && "$orig_widget" != "^I" ]]; then
+      _cassandra_fzf[orig_widget_$keymap]="$orig_widget"
+    fi
+    bindkey -M $keymap '^I' _cassandra_fzf_complete
+  done
+}

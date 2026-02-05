@@ -71,7 +71,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git vi-mode fzf zoxide git-fzf cassandra-fzf)
+plugins=(git vi-mode fzf zoxide git-fzf cassandra-fzf git-cam)
 
 source $ZSH/oh-my-zsh.sh
 
