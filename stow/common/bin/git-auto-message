@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+
+prompt='Following is a git diff, create a 1 to 2 sentance summary for the commit message'
+_diff="$(git diff)"
+# when you store the output to a variable via $() it will drop the \n from the end; simple way to make sure format is nice
+_result="$(ollama run --hidethinking --think=false "${GIT_AUTO_MODEL:-glm-4.7-flash:latest}" "${prompt}\n<diff>${_diff}</diff>")"
+echo "$_result"
+
